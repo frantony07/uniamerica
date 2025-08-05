@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="teste.css">
+     <style>   
+        body {
+            text-align: center;
+            color :rgb(138, 158, 99);
+            background :linear-gradient(to right, #043b15, #010205);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+        }
+        .registrationPage {
+           text-align: center;
+        }
+     </style>
+</head>
+<body>
+    <div class="registrationPage">
+        <h1>Users registration</h1>
+        <p>welcome to site of Uniamerica, create new usuary</p>
+            <div class ="container">
+                <label for="newUsuary.name">Write your name of usuary</label>
+                <input type :text id="newUsuary.name" placeholder="Enter your name of usuary"/>
+
+                <label for ="newUsuary.password">Write you password </label>
+                <input  id ="newUsuary.password" placeholder="Enter your password" type="password"/>
+
+                <label for="newUsuary.email">Write your email</label>
+                <input type="email" id="newUsuary.email" placeholder="Enter your email"/>
+
+                <label for="newUsuary.phone">Write your phone</label>
+                <input type="tel" id="newUsuary.phone" placeholder="Enter your phone number"/>
+                <button onclick="register()">Register </button>
+
+            </div>
+    </div>
+
+    
+</body>
+<script src="main.js"></script>
+</html>
