@@ -1,0 +1,56 @@
+body{
+    background-color: rgba(0, 0, 0, 0.92);
+}
+h1{
+    color: rgb(255, 249, 249);
+    text-align: center;
+}
+h2{
+    color:  rgb(255, 249, 249);
+
+}
+.fire{
+    background-color: rgb(124, 55, 55);
+    cursor: pointer;
+    color:white;
+    padding: 1px 8px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.selected.fire {
+     background-color: rgb(179, 9, 9); 
+}
+.water{
+    background-color: rgb(148, 207, 219);
+    cursor:pointer;
+    color: rgb(255, 249, 249);
+    border-radius: 5px;
+}
+.selected.water {
+     background-color: #1e90ff; 
+}
+.rain{
+    background-color: rgb(224, 229, 115);
+    border-radius: 5px;
+    color:rgb(0, 0, 0);
+    cursor: pointer;
+}
+.selected.rain{
+    background-color: rgb(228, 239, 5);
+}
+.plant{
+    background-color: rgb(90, 171, 90);
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+.selected.plant{
+     background-color: darkgreen;
+}
+
+.pesquisar{
+    background-color: rgb(64, 63, 63);
+    color:white;
+    cursor: pointer;
+    border-radius: 5px;
+}
