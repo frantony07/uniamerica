@@ -33,13 +33,13 @@ async function searchCategory(){
         container.style.gap = "10px";
 
         for(let p of primary10){
-             const res = await fetch(p.url);
+            const res = await fetch(p.url);
             const info = await res.json();
 
             const card = document.createElement("div");
             card.style.border = "1px solid #ccc";
-            card.style.borderRadius = "8px";
-            card.style.padding = "10px";
+            card.style.borderRadius = "7px";
+            card.style.padding = "9px";
             card.style.textAlign = "center";
             card.style.width = "120px";
             card.style.backgroundColor = "#f0f0f0";
@@ -55,7 +55,7 @@ async function searchCategory(){
 
     }catch(error){
         console.error("erro na obtençao doa dados pokemon")
-        alert("erro na obtençao doa dados pokemon")
+        alert("erro na obtençao dos dados pokemon")
 
     }
 
