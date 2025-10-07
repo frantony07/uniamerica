@@ -1,27 +1,22 @@
-.header{
+.nav{
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 99%;
-    height: 60px;
-    background:linear-gradient( #020d1b, #000000, #470202) ;
-    display: flex;
+    background: #09091c;
+    background: linear-gradient(90deg, rgba(9, 9, 28, 1) 0%, rgba(0, 0, 0, 1) 53%, rgba(12, 12, 33, 1) 100%);
+    /* display: flex;
     align-items: center;
     justify-content: space-around;
     padding: 0 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0 , 0.2);
-    z-index: 1000;
-    
+    z-index: 1000; */
 }
+
 .pokedex{
-    font-size: 35px;
-    color: aliceblue;
+    font-size: 25px;
+    color: white;
     transition: 0.3s;
 }
-.pokedex:hover{
-    
-    color:  #601111 ;
-}
+
+
 .Home{
     padding: 10px 20px;
     font-size: 15px;
