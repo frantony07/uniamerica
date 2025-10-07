@@ -26,7 +26,7 @@
     cursor: pointer; 
 }
 .Home:hover{
-    color: #000000;
+    background-color: #e90707;
 }
 .Category{
     padding: 10px 20px;
@@ -37,7 +37,7 @@
     cursor: pointer;
 }
 .Category:hover{
-    color: #000000;
+        background-color: #08479b;
 }
 .cardPokemon{
     padding: 10px 20px;
@@ -48,7 +48,7 @@
     cursor: pointer;
 }
 .cardPokemon:hover{
-    color: #000000;
+        background-color: #15ca15bb;
 }
 .mapPokemon{
     padding: 10px 20px;
@@ -59,7 +59,7 @@
     cursor: pointer;
 }
 .mapPokemon:hover{
-    color: #000000;
+    background-color: #702ba1bb;
 }
 .favorite{
     padding: 10px 20px;
@@ -70,11 +70,15 @@
     cursor: pointer;
 }
 .favorite:hover{
-    color: #000000;
+    background-color: #d8df11bb;
 }
 .user{
     padding: 0.8%;
     border-radius: 20px;
     background-color: rgb(36, 34, 34);
     border-color: red;
+}
+.user:hover{
+    background-color: rgb(65, 63, 63);
+
 }
