@@ -1,21 +1,26 @@
-header{
-   
+.header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 99%;
+    height: 60px;
     background:linear-gradient( #020d1b, #000000, #470202) ;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    box-shadow: 0 2px 5px rgba(199, 39, 39, 0.2);  
-    height: 75px;  
+    justify-content: space-around;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0 , 0.2);
+    z-index: 1000;
+    
 }
+
 .pokedex{
-    font-size: 35px;
-    color: aliceblue;
+    font-size: 25px;
+    color: white;
     transition: 0.3s;
 }
-.pokedex:hover{
-    
-    color:  #601111 ;
-}
+
+
 .Home{
     padding: 10px 20px;
     font-size: 15px;
@@ -25,7 +30,7 @@ header{
     cursor: pointer; 
 }
 .Home:hover{
-    color: #000000;
+    background-color: #e90707;
 }
 .Category{
     padding: 10px 20px;
@@ -36,7 +41,7 @@ header{
     cursor: pointer;
 }
 .Category:hover{
-    color: #000000;
+        background-color: #08479b;
 }
 .cardPokemon{
     padding: 10px 20px;
@@ -47,7 +52,7 @@ header{
     cursor: pointer;
 }
 .cardPokemon:hover{
-    color: #000000;
+        background-color: #15ca15bb;
 }
 .mapPokemon{
     padding: 10px 20px;
@@ -58,7 +63,7 @@ header{
     cursor: pointer;
 }
 .mapPokemon:hover{
-    color: #000000;
+    background-color: #702ba1bb;
 }
 .favorite{
     padding: 10px 20px;
@@ -69,5 +74,15 @@ header{
     cursor: pointer;
 }
 .favorite:hover{
-    color: #000000;
+    background-color: #d8df11bb;
+}
+.user{
+    padding: 0.8%;
+    border-radius: 20px;
+    background-color: rgb(36, 34, 34);
+    border-color: red;
+}
+.user:hover{
+    background-color: rgb(65, 63, 63);
+
 }
