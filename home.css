@@ -1,23 +1,20 @@
-.header{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 99%;
-    height: 60px;
+header{
     background:linear-gradient( #020d1b, #000000, #470202) ;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    padding: 0 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0 , 0.2);
-    z-index: 1000;
-    
+    justify-content: space-evenly;
+    height: 75px;  
 }
 
 .pokedex{
     font-size: 25px;
     color: white;
     transition: 0.3s;
+}
+.pokedex:hover{
+    
+    color:  #601111 ;
 }
 
 
@@ -30,9 +27,10 @@
     cursor: pointer; 
 }
 .Home:hover{
+    color: #000000;
     background-color: #e90707;
 }
-.Category{
+.category{
     padding: 10px 20px;
     font-size: 15px;
     border-radius: 20px;
@@ -40,8 +38,13 @@
     background-color: #05326e;
     cursor: pointer;
 }
-.Category:hover{
+.category:hover{
+        color: #000000;
         background-color: #08479b;
+}
+ .category.selected{
+        color: #000000;
+        background-color: #9b0808;
 }
 .cardPokemon{
     padding: 10px 20px;
@@ -52,6 +55,7 @@
     cursor: pointer;
 }
 .cardPokemon:hover{
+     color: #000000;
         background-color: #15ca15bb;
 }
 .mapPokemon{
@@ -63,6 +67,7 @@
     cursor: pointer;
 }
 .mapPokemon:hover{
+    color: #000000;
     background-color: #702ba1bb;
 }
 .favorite{
@@ -74,6 +79,7 @@
     cursor: pointer;
 }
 .favorite:hover{
+    color: #000000;
     background-color: #d8df11bb;
 }
 .user{
@@ -83,6 +89,7 @@
     border-color: red;
 }
 .user:hover{
+    color: #000000;
     background-color: rgb(65, 63, 63);
 
 }
