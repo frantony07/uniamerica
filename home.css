@@ -1,20 +1,34 @@
+html{
+    height: 100%;
+}
 header{
     background:linear-gradient( #020d1b, #000000, #470202) ;
     display: flex;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0 , 0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0 , 0.2);
     justify-content: space-evenly;
     height: 75px;  
 }
+body{
+    margin: 0;
+    padding: 0;
+    background:linear-gradient( #020d1b, #000000, #470202) ;
+    height: 100%;       
+}
+
 
 .pokedex{
     font-size: 25px;
     color: white;
-    transition: 0.3s;
+    display: inline-flex;
 }
-.pokedex:hover{
-    
-    color:  #601111 ;
+.pokedex span{
+    transition: 0.3s;
+    cursor: default;
+}
+.pokedex span:hover{
+    color: #470202;
+
 }
 
 
@@ -25,11 +39,19 @@ header{
     color: aliceblue;
     background-color: #c00707;
     cursor: pointer; 
+    border: 3px solid #595353;
 }
 .Home:hover{
     color: #000000;
-    background-color: #e90707;
+    background-image:linear-gradient( #e23d3d, transparent 60%);
+    box-shadow:  0 0 1px #e23d3d;
 }
+.Home.selected{
+    color: #000000;
+    border: 3px solid #00FFFF;
+    box-shadow: 0 0 6px #17ef9cdd;
+}
+
 .category{
     padding: 10px 20px;
     font-size: 15px;
@@ -37,14 +59,17 @@ header{
     color: aliceblue;
     background-color: #05326e;
     cursor: pointer;
+    border: 3px solid #595353;
 }
 .category:hover{
-        color: #000000;
-        background-color: #08479b;
+    color: #000000;
+    background-color: #08479b;
 }
- .category.selected{
-        color: #000000;
-        background-color: #9b0808;
+.category.selected{
+    color: #000000;
+    border: 3px solid #00FFFF;
+    box-shadow: 0 0 6px #17ef9cdd;
+;
 }
 .cardPokemon{
     padding: 10px 20px;
@@ -53,10 +78,16 @@ header{
     color: aliceblue;
     background-color: #109f10bb;
     cursor: pointer;
+    border: 3px solid #595353;
 }
 .cardPokemon:hover{
-     color: #000000;
-        background-color: #15ca15bb;
+    color: #000000;
+    background-color: #15ca15bb;
+}
+.cardPokemon.selected{
+    color: #000000;
+    border: 3px solid #00FFFF;
+    box-shadow: 0 0 6px #17ef9cdd;
 }
 .mapPokemon{
     padding: 10px 20px;
@@ -65,10 +96,16 @@ header{
     color: aliceblue;
     background-color: #4d1674bb;
     cursor: pointer;
+    border: 3px solid #595353;
 }
 .mapPokemon:hover{
     color: #000000;
     background-color: #702ba1bb;
+}
+.mapPokemon.selected{
+    color: #000000;
+    border: 3px solid #00FFFF;
+    box-shadow: 0 0 6px #17ef9cdd;
 }
 .favorite{
     padding: 10px 20px;
@@ -77,19 +114,31 @@ header{
     color: aliceblue;
     background-color: #a7ac13bb;
     cursor: pointer;
+    border: 3px solid #595353;
 }
 .favorite:hover{
     color: #000000;
     background-color: #d8df11bb;
+}
+.favorite.selected{
+    color: #000000;
+    border: 3px solid #00FFFF;
+    box-shadow: 0 0 6px #17ef9cdd;
 }
 .user{
     padding: 0.8%;
     border-radius: 20px;
     background-color: rgb(36, 34, 34);
     border-color: red;
+    border: 3px solid #595353;
 }
 .user:hover{
     color: #000000;
     background-color: rgb(65, 63, 63);
 
+}
+.user.selected{
+    color: #000000;
+    border: 3px solid #00FFFF;
+    box-shadow: 0 0 6px #17ef9cdd;
 }
