@@ -5,7 +5,7 @@ tipe.forEach(button =>{
         button.classList.add("selected")
 
         if(button.classList.contains("Home"))  ;
-        if(button.classList.contains("category")) ;
+        if(button.classList.contains("category"))  category();
         if(button.classList.contains("cardPokemon")) ;
         if(button.classList.contains("mapPokemon")) ;
         if(button.classList.contains("favorite")) ;
@@ -13,7 +13,17 @@ tipe.forEach(button =>{
     })
 })
 function category(){
-    let categoryDiv =document.getElementsByClassName('.contains');
-    
+    let categoryDiv =document.getElementsByClassName('contains')[0];
+    let buttonFire = document.createElement('button');
+
+    buttonFire.style.backgroundColor = 'red';
+    buttonFire.style.padding = '10px 20px';
+    buttonFire.style.borderRadius= '20px';
+
+    buttonFire.textContent = 'Fire';
+
+    if (categoryDiv) {
+        categoryDiv.appendChild(buttonFire);
+    }
 }
 
