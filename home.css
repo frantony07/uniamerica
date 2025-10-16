@@ -16,7 +16,6 @@ body{
     height: 100%;       
 }
 
-
 .pokedex{
     font-size: 25px;
     color: white;
@@ -30,7 +29,6 @@ body{
     color: #470202;
 
 }
-
 
 .Home{
     padding: 10px 20px;
@@ -167,4 +165,33 @@ body{
     color: #000000;
     border: 3px solid #00FFFF;
     box-shadow: 0 0 6px #17ef9cdd;
+}
+.card-detalhes {
+    background: rgb(6, 6, 32);
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.type-tag {
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.stat-bar-container {
+    height: 10px;
+    background-color: #555570;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.stat-bar {
+    height: 100%;
+    background-color: #70a1ff;
+    border-radius: 5px;
 }
