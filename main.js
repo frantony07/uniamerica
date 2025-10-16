@@ -1,3 +1,4 @@
+import { buttonByCategory}  from './factoryFunctions.js';
 const tipe = document.querySelectorAll(".Home , .category , .cardPokemon , .mapPokemon , .favorite , .user");
 tipe.forEach(button =>{
     button.addEventListener("click",()=>{
@@ -14,16 +15,36 @@ tipe.forEach(button =>{
 })
 function category(){
     let categoryDiv =document.getElementsByClassName('contains')[0];
-    let buttonFire = document.createElement('button');
-
-    buttonFire.style.backgroundColor = 'red';
-    buttonFire.style.padding = '10px 20px';
-    buttonFire.style.borderRadius= '20px';
-
-    buttonFire.textContent = 'Fire';
-
-    if (categoryDiv) {
-        categoryDiv.appendChild(buttonFire);
+      if (categoryDiv) {
+        categoryDiv.innerHTML = '';
     }
+    const tableHashTypePokemons = [
+        { color: '#A8A77A', name: 'Normal' },
+        { color: '#EE8130', name: 'Fire' },
+        { color: '#6390F0', name: 'Water' },
+        { color: '#7AC74C', name: 'Grass' },
+        { color: '#A98FF3', name: 'Electric' },
+        { color: '#F7D02C', name: 'Ice' },
+        { color: '#96D9D6', name: 'Fighting' },
+        { color: '#C22E28', name: 'Poison' },
+        { color: '#A33EA1', name: 'Ground' },
+        { color: '#E2BF65', name: 'Flying' },
+        { color: '#A6B91A', name: 'Psychic' },
+        { color: '#F95587', name: 'Bug' },
+        { color: '#B6A136', name: 'Rock' },
+        { color: '#735878', name: 'Ghost' },
+        { color: '#6F35FC', name: 'Dragon' },
+        { color: '#705746', name: 'Steel' },
+        { color: '#B7B7CE', name: 'Dark' },
+        { color: '#D685AD', name: 'Fairy' }
+    ];
+
+    tableHashTypePokemons.forEach(type=> {
+        let newButton = buttonByCategory(type.color, type.name);
+        newButton.classList.add('category-button'); 
+        if (categoryDiv) {
+            categoryDiv.appendChild(newButton);
+        }
+    });
 }
 

@@ -146,5 +146,25 @@ body{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+ 
+.category-button { 
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 20px;
+    color: aliceblue;
+    cursor: pointer;
+    border: 3px solid #595353; 
+    color: #10160f;
+}
 
+
+.category-button:hover {
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5); 
+}
+
+.category-button.selected { 
+    color: #000000;
+    border: 3px solid #00FFFF;
+    box-shadow: 0 0 6px #17ef9cdd;
 }

@@ -1,16 +1,27 @@
-function buttonByCategory(color , text) {
-    let newButton = document.createElement('button');
+function handleDynamicButtonClick() {
+    const groupButton = document.querySelectorAll('.category-button');
 
-    newButton.style.backgroundColor = ` ${color} `;
+    groupButton.forEach(button => {
+        button.classList.remove('selected');
+    });
+    this.classList.add('selected');
+}
+export function buttonByCategory(color , text) {
+    let newButton = document.createElement('button');
+    newButton.style.backgroundColor = color;
     newButton.style.padding = '10px 20px';
     newButton.style.borderRadius = '20px';
     newButton.style.cursor = 'pointer';
-    newButton.style.color = 'while';
+    newButton.style.color = 'white';
+    newButton.textContent = text;
 
-    newButton.style.select.border = '3px solid #00FFFF';
-    newButton.style.select.boxShadow = '0 0 6px #17ef9cdd' ;
-    newButton.style.select.color = 'while';
-
-    newButton.textContent = `${text}`;
+    newButton.classList.add('category-button');
+    newButton.addEventListener('click', handleDynamicButtonClick); 
+    
+    const container = document.querySelector('.contains');
+    if (container) {
+        container.appendChild(newButton);
+    }
+    return newButton;
    
 }
