@@ -25,3 +25,6 @@ export function buttonByCategory(color , text) {
     return newButton;
    
 }
+export function createtah(){
+    
+}
