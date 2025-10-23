@@ -12,8 +12,8 @@ tipe.forEach(button =>{
         if(button.classList.contains("mapPokemon")) console.log("loading the map pokemons");
         if (button.classList.contains("favorite")) showFavorites();
         if(button.classList.contains("user")) console.log("loading the user");
-    })
-})
+    });
+});
 function cleanContain() {
     let containsElements = document.getElementsByClassName('contains');
     for (let i = 0; i < containsElements.length; i++) {
@@ -22,6 +22,15 @@ function cleanContain() {
 }
 
 let categoriesToBeSearchedInApi = [];
+
+function searchedCategory(){
+  if (!categoriesToBeSearch || categoriesToBeSearch.length === 0){
+    alert("escolhe uma categoria pokemon antes de pesquisar.");
+    return 0;
+  } 
+  
+}
+
 
 function category(){
     let categoryDiv =document.getElementsByClassName('contains')[0];
@@ -140,6 +149,8 @@ function category(){
     categoryDiv.appendChild(mainButton);
     categoryDiv.appendChild(subButtonsContainer);
 }
+
+
 function showFavorites() {
   const container = document.querySelector('.contains');
   container.innerHTML = `
