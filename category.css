@@ -28,7 +28,6 @@
     transition: 0.3s;
     position: relative;
     
-    -webkit-tap-highlight-color: transparent; 
 }
 
 .main-category-button:hover {
@@ -40,7 +39,7 @@
     display: none; 
     flex-wrap: wrap;
     gap: 15px;
-    margin-top: 8px;
+    margin-top: 10px;
     position: absolute;
     background: #1b1b1b;
     padding: 12px;
@@ -51,7 +50,7 @@
     flex-direction: row;
     left: 50%;
     transform: translateX(-50%);
-    top: 27%;
+    top: 30%;
 }
 
 
@@ -71,6 +70,22 @@
 }
 
 .type-button-selected {
+    border: 3px solid #00FFFF ; 
+    box-shadow: 0 0 6px #17ef9cdd ;
+}
+
+
+
+
+.button-search{
+    color: white;
+    background-color: #4e4a4a;
+    border-radius:  15px;
+    box-shadow:  0 0 3px #00FFFF;
+    cursor: pointer;
+    padding: 15px 8px;
+}
+.button-search.selected{
     border: 3px solid #00FFFF ; 
     box-shadow: 0 0 6px #17ef9cdd ;
 }
