@@ -1,0 +1,136 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #111827, #000, #064e3b);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  padding: 40px 0;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.titulo h1 {
+  font-size: 48px;
+  background: linear-gradient(to right, #22c55e, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.icone {
+  width: 50px;
+  height: 50px;
+}
+
+.subtitulo {
+  color: #9ca3af;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+main {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mapa {
+  background: linear-gradient(145deg, #111827, #000);
+  border: 2px solid #374151;
+  border-radius: 12px;
+  padding: 20px;
+  flex: 1 1 600px;
+  height: 600px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0,255,0,0.1);
+}
+
+.mapa h2 {
+  color: #22c55e;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.mapa-area {
+  position: relative;
+  background: radial-gradient(circle at center, #1f2937, #0f172a);
+  border: 2px solid #4b5563;
+  border-radius: 10px;
+  width: 100%;
+  height: 85%;
+  overflow: hidden;
+}
+
+.ponto {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
+  transition: transform 0.3s ease;
+}
+
+.ponto:hover {
+  transform: scale(1.4);
+}
+
+.painel {
+  background: linear-gradient(145deg, #111827, #000);
+  border: 2px solid #374151;
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 0 15px rgba(0,255,255,0.1);
+}
+
+.painel h3 {
+  color: #facc15;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.painel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.painel li {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.painel li:hover {
+  transform: scale(1.05);
+}
+
+.kanto { border-left: 5px solid #dc2626; }
+.johto { border-left: 5px solid #2563eb; }
+.hoenn { border-left: 5px solid #16a34a; }
+.sinnoh { border-left: 5px solid #9333ea; }
+.unova { border-left: 5px solid #ca8a04; }
+.kalos { border-left: 5px solid #db2777; }
