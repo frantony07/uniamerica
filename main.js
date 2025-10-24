@@ -11,7 +11,7 @@ tipe.forEach(button =>{
         if(button.classList.contains("category"))  category();
         if(button.classList.contains("cardPokemon")) console.log("loading the card pokemons");
         if(button.classList.contains("mapPokemon")) console.log("loading the map pokemons");
-        if (button.classList.contains("favorite")) showFavorites();
+        if(button.classList.contains("favorite")) showFavorites();
         if(button.classList.contains("user")) console.log("loading the user");
     });
 });
