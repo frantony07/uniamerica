@@ -83,12 +83,20 @@ export function category(){
     subButtonsContainer.appendChild(subButton);
     });
 
-    mainButton.addEventListener('click', () => {
+    mainButton.addEventListener('click', (event) => {
+        event.stopPropagation();
       const isVisible = subButtonsContainer.style.display === 'flex';
       subButtonsContainer.style.display = isVisible ? 'none' : 'flex';
       mainButton.textContent = isVisible ? 'show types ▼' : 'hide types ▲';
   });
-  
+
+    document.addEventListener('click', () =>{
+        if(mainButton.textContent == 'hide types ▲' && subButtonsContainer.style.display == 'flex'){
+            subButtonsContainer.style.display = 'none';
+            mainButton.textContent = 'show types ▼';
+        }
+    });
+
   const buttonSearch = document.createElement('button');
   buttonSearch.classList.add('button-search');
   buttonSearch.textContent = 'pesquisar'
