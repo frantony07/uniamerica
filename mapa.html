@@ -6,6 +6,7 @@
   <title>Mapa-Pokémon</title>
   <!--Nao conecta no css (era so tentar!)--> 
   <link rel="stylesheet" href="mapa.css">
+  <link rel="stylesheet" href="home.css">
   <!-- biblioteca de icones -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <!-- Bootstrap -->
@@ -23,27 +24,26 @@
                 <img src="img/pokebola.png" width="20%" />
                 <h2 class="pokedex align-content-center fw-bold mt-2">POKEFAN</h2>
             </div>
-            <div class="col-md-8 align-content-center">
-                <button type="button" class="Home"><i class="fa-solid fa-house"
-                        style="color: #ffffff;"></i></i>Home</button>
-                <button type="button" class="category "><i class="fa-solid fa-table-cells "
+           <div class="col-md-8 align-content-center">
+                <a href="home.html" type="button" class="Home"><i class="fa-solid fa-house"
+                        style="color: #ffffff;"></i></i>Home</a>
+                <a href="category.html" type="button" class="category "><i class="fa-solid fa-table-cells "
                         style="color: #ffffff;"></i>Categoria</button>
-                <button type="button" class="cardPokemon"><i class="fa-regular fa-hard-drive"
-                        style="color: #ffffff;"></i>Cartas Pokemon</button>
-                <button type="button" class="mapPokemon"><i class="fa-regular fa-map"
-                        style="color: #ffffff;"></i>Mapa</button>
-                <button type="button" class="favorite"><i class="fa-regular fa-star"
-                        style="color: #ffffff;"></i>Favorito</button>
-
-                    </div>
-                    <div class="col-md-2 align-content-center">
-                        <button type="button" class="user p-2">
-                            <i class="fa-regular fa-user" style="color: #ffffff;"></i></button>
-                        </div>
+                <a href="cards.html" type="button" class="cardPokemon selected"><i class="fa-regular fa-hard-drive"
+                        style="color: #ffffff;"></i>Cartas Pokemon</a>
+                <a href="mapa.html" type="button" class="mapPokemon"><i class="fa-regular fa-map"
+                        style="color: #ffffff;"></i>Mapa</a>
+                <a href="favoritos.html" type="button" class="favorite"><i class="fa-regular fa-star"
+                        style="color: #ffffff;"></i>Favorito</a>
+            </div>
+            <div class="col-md-2 align-content-center">
+                <button type="button" class="user p-2">
+                <i class="fa-regular fa-user" style="color: #ffffff;"></i></button>
+            </div>
                     </div>
     </nav>
      <header>
-      <div class="titulo">
+      <div class="titulo-map">
         <i class="fa-regular fa-compass fa-3x" style="color: hsl(162, 76%, 29%);"></i>
         <h1>MAPA POKÉMON</h1>
         <i class="fa-regular fa-compass fa-3x" style="color: hsl(162, 76%, 29%);"></i>
@@ -77,5 +77,6 @@
     </main>
   </div>
 </body>
+  <script src="main.js"></script>
 </html>
    

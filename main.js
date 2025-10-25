@@ -8,7 +8,7 @@ tipe.forEach(button =>{
         cleanContain();
 
         if(button.classList.contains("Home")) console.log("loading the home") ;
-        if(button.classList.contains("category"))  category();
+        if(button.classList.contains("category"))  console.log("loading the category pokemon");
         if(button.classList.contains("cardPokemon")) console.log("loading the card pokemons");
         if(button.classList.contains("mapPokemon")) console.log("loading the map pokemons");
         if(button.classList.contains("favorite")) showFavorites();
