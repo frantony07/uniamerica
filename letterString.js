@@ -11,4 +11,4 @@ function hoverLatter(string){
       .join('');
 }
 
-hoverLatter('.pokedex')
+hoverLatter('.pokedex align-content-center fw-bold mt-2')

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h5 class="card-title text-center">${pokemon.name}</h5>
                         </div>
                         <div class="card-body">
-                            <img src="${pokemon.image}" alt="${pokemon.name}">
+                            <img src="${pokemon.photo_url}" alt="${pokemon.name}">
                             <p class="card-text">Tipo: ${pokemon.type.join(', ')}</p>
                             <p class="card-text">HP: ${pokemon.hp}</p>
                             <p class="card-text">Ataque: ${pokemon.attack}</p>

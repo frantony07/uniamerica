@@ -1,62 +1,101 @@
 let categoriesToBeSearchedInApi = [];
 
-function searchedCategory(){
-  if ( !categoriesToBeSearchedInApi || categoriesToBeSearchedInApi.length === 0){
-    alert("escolhe uma categoria pokemon antes de pesquisar.");
-    return false;
-  } 
-  return true;
+async function createArrayPokemon(){
+  try {
+    const response = await fetch('pokemons.json'); 
+    const arrayPokemon =  await response.json();
+    return arrayPokemon;
+  } catch (error) {
+    console.error('Erro ao carregar os dados dos Pokémon:', error);
+    return [];
+  }
 }
 
-export function category(){
-  let buttonBysearchIsActive = false ;
-  let categoryDiv = document.getElementsByClassName('contains')[0];
-    
-  if (categoryDiv) {
-    categoryDiv.innerHTML = '';
-    categoryDiv.classList.add('contains');
-  }
-  if (!categoryDiv) return;
+function createVisualitiPokemon(pokemons) {
+    let fragment = document.createDocumentFragment();
 
-  let title = document.createElement('h2');
-  title.textContent = "CATEGORIES POKEMONS";
-  title.classList.add('category-title');
-  categoryDiv.appendChild(title);
-  categoryDiv.appendChild(document.createElement('br'));
-    
-  const buttonsContainer = document.createElement('div');
-  buttonsContainer.classList.add('category-buttons'); 
-  categoryDiv.appendChild(buttonsContainer);
+    if (!pokemons || pokemons.length === 0) {
+        let message = document.createElement('p');
+        message.textContent = "Nenhum Pokémon encontrado para esta seleção.";
+        fragment.appendChild(message);
+        return fragment;
+    }
+    pokemons.forEach((pokemon) => {
+        let divPokemon = document.createElement('div');
+        divPokemon.classList.add('divPokemon');
 
-  const tableHashTypePokemons = [
-    { color: '#A8A77A', name: 'Normal' },
-    { color: '#EE8130', name: 'Fire' },
-    { color: '#6390F0', name: 'Water' },
-    { color: '#7AC74C', name: 'Grass' },
-    { color: '#A98FF3', name: 'Electric' },
-    { color: '#96D9D6', name: 'Ice' },
-    { color: '#F7D02C', name: 'Fighting' },
-    { color: '#C22E28', name: 'Poison' },
-    { color: '#A33EA1', name: 'Ground' },
-    { color: '#E2BF65', name: 'Flying' },
-    { color: '#A6B91A', name: 'Psychic' },
-    { color: '#F95587', name: 'Bug' },
-    { color: '#B6A136', name: 'Rock' },
-    { color: '#735878', name: 'Ghost' },
-    { color: '#6F35FC', name: 'Dragon' },
-    { color: '#705746', name: 'Steel' },
-    { color: '#B7B7CE', name: 'Dark' },
-    { color: '#D685AD', name: 'Fairy' }
-  ];
+        let pokemonId = document.createElement('h3');
+        pokemonId.textContent = `#${pokemon.id}`;
+        divPokemon.appendChild(pokemonId);
+
+        let pokemonName = document.createElement('h2');
+        pokemonName.textContent = pokemon.name;
+        divPokemon.appendChild(pokemonName);
+
+        let pokemonsPhoto = document.createElement('img');
+        pokemonsPhoto.src = pokemon.photo_url;
+        pokemonsPhoto.alt = `Photo of ${pokemon.name}`;
+        divPokemon.appendChild(pokemonsPhoto);
+      
+        fragment.appendChild(divPokemon);
+    });
+
+    return fragment; 
+}
+
+async function searchedCategory(){
+  let  arrayPokemonsSelected =[];
+  if ( !categoriesToBeSearchedInApi || categoriesToBeSearchedInApi.length === 0){
+    alert("escolhe uma categoria pokemon antes de pesquisar.");
     
-  const mainButton = document.createElement('button');
-  mainButton.textContent = 'show types ▼';
-  mainButton.classList.add('main-category-button'); 
-    
-  const subButtonsContainer = document.createElement('div');
-  subButtonsContainer.classList.add('sub-buttons-container'); 
+    return []; 
+  } 
+  const arrayPokemons = await createArrayPokemon();
+  arrayPokemons.forEach(pokemon =>{
+    const typeIsSelected = categoriesToBeSearchedInApi.some(category => 
+        pokemon.type.includes(category)
+    );
+
+    if (typeIsSelected){
+      arrayPokemonsSelected.push(pokemon)
+    }
+  });
+
+  return arrayPokemonsSelected;
+}
+
+
+function createButtonOfSearched(containerPokemons){
+  const buttonSearch = document.createElement('button');
+   buttonSearch.classList.add('button-search');
+   buttonSearch.textContent = 'pesquisar';
    
-  tableHashTypePokemons.forEach(type => {
+
+   buttonSearch.addEventListener('click' , async () => {
+      
+      const selectedPokemonArray = await searchedCategory();
+     
+      if (!selectedPokemonArray || selectedPokemonArray.length === 0) {
+        buttonSearch.classList.remove('selected');
+        containerPokemons.innerHTML = ''; 
+      }
+    
+   
+      const newPokemonFragment = createVisualitiPokemon(selectedPokemonArray);
+      containerPokemons.innerHTML = '';
+      containerPokemons.appendChild(newPokemonFragment);
+
+      buttonSearch.classList.add('selected');
+   });
+  return buttonSearch ;
+}
+
+function createButtonForTypePokemons(subButtonsContainer){
+  const tableHashTypePokemons = [
+    { color: '#A8A77A', name: 'Normal' },{ color: '#EE8130', name: 'Fire' },{ color: '#6390F0', name: 'Water' },{ color: '#7AC74C', name: 'Grass' },{ color: '#A98FF3', name: 'Electric' },{ color: '#96D9D6', name: 'Ice' },{ color: '#F7D02C', name: 'Fighting' },{ color: '#C22E28', name: 'Poison' },{ color: '#A33EA1', name: 'Ground' },{ color: '#E2BF65', name: 'Flying' },{ color: '#A6B91A', name: 'Psychic' },{ color: '#F95587', name: 'Bug' },{ color: '#B6A136', name: 'Rock' },{ color: '#735878', name: 'Ghost' },{ color: '#6F35FC', name: 'Dragon' },{ color: '#705746', name: 'Steel' },{ color: '#B7B7CE', name: 'Dark' },{ color: '#D685AD', name: 'Fairy' }
+  ];
+
+   tableHashTypePokemons.forEach(type => {
     const subButton = document.createElement('button');
     subButton.textContent = type.name;
     subButton.classList.add('type-button'); 
@@ -82,38 +121,56 @@ export function category(){
         
     subButtonsContainer.appendChild(subButton);
     });
+  
+}
 
-    mainButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-      const isVisible = subButtonsContainer.style.display === 'flex';
-      subButtonsContainer.style.display = isVisible ? 'none' : 'flex';
-      mainButton.textContent = isVisible ? 'show types ▼' : 'hide types ▲';
+export function category(){
+  
+  let categoryDiv = document.getElementsByClassName('contains')[0];
+    
+  if (categoryDiv) {
+    categoryDiv.innerHTML = '';
+    categoryDiv.classList.add('contains');
+  }
+  if (!categoryDiv) return;
+
+  const pokemonDisplayContainer = document.createElement('div');
+  pokemonDisplayContainer.id = 'pokemon-results'; 
+  
+  const filterControls = document.createElement('div'); 
+  filterControls.classList.add('filter-controls');
+
+  const mainButton = document.createElement('button'); 
+  mainButton.textContent = 'show types ▼';
+  mainButton.classList.add('main-category-button'); 
+    
+  const subButtonsContainer = document.createElement('div');
+  subButtonsContainer.classList.add('sub-buttons-container'); 
+
+  createButtonForTypePokemons(subButtonsContainer); 
+  const buttonSearch = createButtonOfSearched(pokemonDisplayContainer); 
+
+  filterControls.appendChild(mainButton);
+  filterControls.appendChild(buttonSearch);
+  filterControls.appendChild(subButtonsContainer);
+  
+  mainButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const isVisible = subButtonsContainer.style.display === 'flex';
+    subButtonsContainer.style.display = isVisible ? 'none' : 'flex';
+    mainButton.textContent = isVisible ? 'hide types ▲' : 'show types ▼';
   });
 
-    document.addEventListener('click', () =>{
-        if(mainButton.textContent == 'hide types ▲' && subButtonsContainer.style.display == 'flex'){
-            subButtonsContainer.style.display = 'none';
-            mainButton.textContent = 'show types ▼';
-        }
-    });
-
-  const buttonSearch = document.createElement('button');
-  buttonSearch.classList.add('button-search');
-  buttonSearch.textContent = 'pesquisar'
-  buttonSearch.addEventListener('click' , () => {
-  if (!buttonBysearchIsActive){
-    const searchSucceeded = searchedCategory();
-    if (searchSucceeded) {
-      buttonSearch.classList.add('selected');
-      buttonBysearchIsActive = true;
+  document.addEventListener('click', () =>{
+   
+    if(mainButton.textContent == 'hide types ▲' && subButtonsContainer.style.display == 'flex'){
+        subButtonsContainer.style.display = 'none';
+        mainButton.textContent = 'show types ▼';
+        buttonSearch.classList.remove('selected');
     }
-  } else {
-    buttonSearch.classList.remove('selected');
-    buttonBysearchIsActive = false;
-  }
-});
-  
-  categoryDiv.appendChild(mainButton);
-  categoryDiv.appendChild(subButtonsContainer);
-  categoryDiv.appendChild(buttonSearch);
+  });
+
+  categoryDiv.appendChild(filterControls);
+  categoryDiv.appendChild(pokemonDisplayContainer); 
 }
+
