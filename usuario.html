@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokedex — Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="title">Pokedex — Login</h1>
+
+    <div id="successMessage" class="msg success hidden">
+      ✅ Login realizado com sucesso!
+    </div>
+
+    <div id="errorMessage" class="msg error hidden">
+      ❌ Usuário ou senha incorretos.
+    </div>
+
+    <form id="loginForm">
+      <label>Usuário</label>
+      <input type="text" id="username" placeholder="ash" required>
+
+      <label>Senha</label>
+      <input type="password" id="password" placeholder="pikachu" required>
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p class="hint">Usuário: <b>ash</b> | Senha: <b>pikachu</b></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
