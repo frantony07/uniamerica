@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <p class="card-text">Defesa: ${pokemon.defense}</p>
                         </div>
                     </div>
-                `;
+                `; 
                 container.innerHTML += card;
             });
         })

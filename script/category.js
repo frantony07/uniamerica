@@ -180,7 +180,7 @@ export function category(){
   categoryDiv.appendChild(pokemonDisplayContainer); 
 }
 document.addEventListener('DOMContentLoaded', () => {
-    // Esta linha garante que a categoria renderize automaticamente ao carregar category.html
+  
     if (document.getElementsByClassName('contains').length > 0) {
         category();
     }
