@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pokedex</title>
+    <link rel="stylesheet" href="/styles/home.css">
+    <link rel="stylesheet" href="/styles/pgPrincipal.css">
+    <link rel="import" href="../pokemons.json">
+    <!-- biblioteca de icones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <br><br>
+    <main class="paginaPrincipal">
+        <div class="imgPokebola">
+            <img src="./img/pokebola.png" width="100%" />
+            <!-- COLOCAR A IMAGEM DA POKEBOLA-->
+        </div>
+
+        <div class="textoPrincipal">
+            <h1>BEM-VINDO À POKEFAN</h1>
+            <!--COLOCAR O TEXTO BEM VINDO A POKEFAN TALTAL-->
+        </div>
+
+        <div class="raios">
+            <p>⚡⚡⚡</p>
+            <!-- COLOCAR A IMAGEM DOS RAIOS, e tentar fazer os efeitos dele pulando-->
+        </div>
+
+        <div class="containerBusca">
+            <h3>SISTEMA DE BUSCA ATIVO</h3>
+            <div class="caixaBusca">
+                <input type="text" id="pokemonBuscado" placeholder="Digite o nome ou número">
+                <div class="pontinhos">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <button id="botaoBusca" class="botaoBusca">
+                INICIAR BUSCA
+            </button>
+            <div id="procurarPokemon"></div>
+        </div>
+
+        <div class="subtexto">
+            <h3>Explore o mundo dos Pokémon com nossa POKEFAN digital avançada. Descubra
+                informações, tipos, evoluções e muito mais!</h2>
+        </div>
+    </main>
+    </div>
+    <nav class="contains"></nav>
+</body>
+<script type="module" src="/script/main.js"></script>
+<script type="module" src="/script/letterString.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6P7c0f1F2a2x6N3C4a5B8E9D0F3F2d4D5C6E7F8G9H0I1J2K3L4M5N6O7P8Q9R" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

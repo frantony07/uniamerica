@@ -166,52 +166,36 @@ body{
     border: 3px solid #00FFFF;
     box-shadow: 0 0 6px #17ef9cdd;
 }
-.header-bg {
-    background-color: #3b3b64;
+
+.nav{
+    background: linear-gradient(#020d1b, #000000, #470202);
 }
 
-.type-tag {
-    border-radius: 5px;
-    padding: 3px 8px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    margin-right: 5px;
+@media (max-width: 991px) {
+    #navbarCentral {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(#020d1b, #000000, #470202);
+        z-index: 1000;
+        padding: 15px;
+        border-top: 3px solid #dc3545;
+    }
+    
+    .navbar-collapse .d-flex {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .nav a {
+        margin: 5px 0;
+        width: 200px;
+        text-align: center;
+    }
+}
+
+.nav a {
     display: inline-block;
-}
-
-.type-grass {
-    background-color: #7AC74C;
-}
-
-.type-poison {
-    background-color: #A33EA1;
-}
-
-.stat-bar-container {
-    height: 10px;
-    background-color: #555570;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-.stat-bar {
-    height: 100%;
-    background-color: #70a1ff;
-    border-radius: 5px;
-}
-
-.header-stats {
-    color: #ffc107;
-}
-
-.header-evo {
-    color: #e83e8c;
-}
-
-.header-weakness {
-    color: #dc3545;
-}
-
-.header-strength {
-    color: #28a745;
+    text-decoration: none;
 }
