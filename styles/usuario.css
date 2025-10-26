@@ -1,14 +1,11 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: linear-gradient(to bottom, #d7eaff, #ffffff);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  background: linear-gradient(135deg, #111827, #000, #064e3b);
+  min-height: 100vh;
 }
 
-.container {
+.login-content {
   background: #fff;
   padding: 25px;
   width: 320px;
