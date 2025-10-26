@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex — Login</title>
+  <link rel="stylesheet" href="../styles/usuario.css">
+  <link rel="stylesheet" href="../styles/home.css">
+  <!-- biblioteca de icones -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <!--Puxando os Pokemons-->
+  <link rel="pokemon" href="/.pokemons.json">
+</head>
+
+
+<body class="d-flex flex-column min-vh-100">
+  <!-- puxa o nav -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Login Section -->
+  <div class="container flex-grow-1 d-flex justify-content-center align-items-center">
+    <div class="login-content">
+      <h1 class="title">Pokedex — Login</h1>
+
+      <div id="successMessage" class="msg success hidden">
+        ✅ Login realizado com sucesso!
+      </div>
+
+      <div id="errorMessage" class="msg error hidden">
+        ❌ Usuário ou senha incorretos.
+      </div>
+
+      <form id="loginForm">
+        <label>Usuário</label>
+        <input type="text" id="username" placeholder="ash" required>
+
+        <label>Senha</label>
+        <input type="password" id="password" placeholder="pikachu" required>
+
+        <button type="submit">Entrar</button>
+      </form>
+
+      <p class="hint">Usuário: <b>ash</b> | Senha: <b>pikachu</b></p>
+    </div>
+  </div>
+
+
+</body>
+<script type="module" src="../script/main.js"></script>
+<script type="module" src="../script/letterString.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-C6P7c0f1F2a2x6N3C4a5B8E9D0F3F2d4D5C6E7F8G9H0I1J2K3L4M5N6O7P8Q9R" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="../script/usuario.js"></script>
+
+</html>

@@ -1,0 +1,159 @@
+/* ==========================================================
+   FLUXO PRINCIPAL E CENTRALIZAÇÃO
+   ========================================================== */
+
+/* CONTAINER PRINCIPAL: .contains */
+/* Centraliza o conteúdo (filtros e resultados) e empilha-os verticalmente. */
+.contains {
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; /* Centraliza horizontalmente os blocos filhos (filtros, resultados) */
+    gap: 15px;
+    padding: 0 10px;
+}
+
+/* TÍTULO: .category-title */
+.category-title {
+    color: #A8A77A; 
+    text-align: center;
+    width: 100%; 
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* CONTAINER DOS BOTÕES: .filter-controls */
+/* Fica estático e centralizado. É a âncora (position: relative) para o menu flutuante. */
+.filter-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center; 
+    
+    position: relative; /* CRÍTICO: Âncora */
+    z-index: 10;
+    margin-bottom: 20px; 
+}
+
+
+/* ==========================================================
+   BOTÕES DE FILTRO E SUB-MENU
+   ========================================================== */
+
+.main-category-button {
+    background-color: #A8A77A;
+    color: white; 
+    border: none;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.main-category-button:hover {
+    filter: brightness(1.1); 
+}
+
+.sub-buttons-container {
+position: absolute;
+display: none;
+flex-wrap: wrap;
+gap: 15px;
+background: #1b1b1b;
+padding: 12px;
+border-radius: 12px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+z-index: 1000;
+width: 550px;
+flex-direction: row;
+left: 50%;
+transform: translateX(-50%);
+top: 100%;
+} 
+
+
+.type-button {
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+    min-width: 70px;
+}
+
+.type-button-hover {
+    transform: scale(1.1);
+}
+
+.type-button-selected {
+    border: 3px solid #00FFFF ; 
+    box-shadow: 0 0 6px #17ef9cdd ;
+}
+
+.button-search{
+    color: white;
+    background-color: #4e4a4a;
+    border-radius:  15px;
+    box-shadow:  0 0 3px #00FFFF;
+    cursor: pointer;
+    padding: 10px 18px; 
+}
+
+.button-search.selected{
+    border: 3px solid #00FFFF ; 
+    box-shadow: 0 0 6px #17ef9cdd ;
+}
+
+
+#pokemon-results {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: center; 
+    padding: 20px 0; 
+    border-top: 2px solid #ccc; 
+    width: 100%; 
+}
+
+.divPokemon {
+    width: 200px; 
+    min-height: 280px;
+    background-color: #f7f7f7; 
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.2s; 
+}
+
+.divPokemon:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.divPokemon img {
+    width: 80%; 
+    height: auto;
+    object-fit: contain;
+    margin: 10px 0;
+    border-radius: 50%; 
+    border: 3px solid #ccc;
+    background-color: #fff;
+}
+
+.divPokemon h3 {
+    font-size: 0.9em;
+    color: #666; 
+    margin-bottom: 5px;
+}
+
+.divPokemon h2 {
+    font-size: 1.4em;
+    color: #333;
+    text-transform: capitalize; 
+    margin-top: 0;
+    margin-bottom: 10px;
+}

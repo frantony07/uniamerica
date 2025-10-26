@@ -1,0 +1,215 @@
+/* ==========================================
+   PADRÃO: Cards e Estrutura
+   ========================================== */
+.card-pokemon-detalhes {
+    background: rgba(26, 31, 46, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+}
+
+.card-pokemon-detalhes.card-weakness {
+    border: 2px solid #cc3333;
+}
+
+.card-pokemon-detalhes.card-strength {
+    border: 2px solid #00cc00;
+}
+
+/* ==========================================
+   TÍTULOS E TEXTOS
+   ========================================== */
+.pokemon-id-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.pokemon-name-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.pokemon-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #aaa;
+}
+
+.text-evolution {
+    font-size: 1.2rem;
+    color: #ff69b4;
+}
+
+.text-weakness {
+    color: #ff6b6b;
+    font-size: 1.1rem;
+}
+
+.text-strength {
+    color: #00ff00;
+    font-size: 1.1rem;
+}
+
+/* ==========================================
+   IMAGEM DO POKÉMON
+   ========================================== */
+.pokemon-image-circle {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    background: radial-gradient(circle, rgba(100, 100, 150, 0.2) 0%, rgba(50, 50, 80, 0.4) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(100, 100, 150, 0.3);
+}
+
+.pokemon-image {
+    max-width: 85%;
+    max-height: 85%;
+}
+
+/* ==========================================
+   TIPOS
+   ========================================== */
+.pokemon-types-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.pokemon-type-badge {
+    padding: 8px 16px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+/* ==========================================
+   ESTATÍSTICAS
+   ========================================== */
+.stat-item {
+    margin-bottom: 1rem;
+}
+
+.stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.stat-bar-bg {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stat-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff, #0099ff);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* ==========================================
+   LINHA EVOLUTIVA
+   ========================================== */
+.evolution-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.evolution-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.evolution-circle {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(100, 100, 150, 0.3);
+    font-size: 1.8rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.evolution-arrow {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 25px;
+}
+
+.evolution-item .badge {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* ==========================================
+   BADGES (Fraquezas/Fortalezas)
+   ========================================== */
+.type-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #fff;
+}
+
+/* ==========================================
+   RESPONSIVO
+   ========================================== */
+@media (max-width: 576px) {
+    .pokemon-id-title {
+        font-size: 1.5rem;
+    }
+
+    .pokemon-name-title {
+        font-size: 1.2rem;
+    }
+
+    .pokemon-image-circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .card-pokemon-detalhes {
+        padding: 16px;
+    }
+
+    .evolution-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
+    }
+
+    .evolution-arrow {
+        font-size: 0.8rem;
+        margin-bottom: 18px;
+    }
+
+    .stat-item {
+        margin-bottom: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .pokemon-types-container {
+        justify-content: center;
+    }
+}
