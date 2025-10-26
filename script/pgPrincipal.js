@@ -1,3 +1,20 @@
+function hoverLatter(string) {
+    const pokedexString = document.querySelector(string);
+
+    if (!pokedexString) {
+        console.warn(`Elemento "${string}" não encontrado nesta página`);
+        return;
+    }
+
+    const text = pokedexString.textContent;
+
+    pokedexString.innerHTML = text
+        .split('')
+        .map(letter => `<span>${letter}</span>`)
+        .join('');
+}
+
+// UM SÓ DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     const campoBusca = document.getElementById('pokemonBuscado');
     const botaoBusca = document.getElementById('botaoBusca');
@@ -7,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const dados = await fetch('pokemons.json');
             const pokemons = await dados.json();
-            
+
             busca = busca.toLowerCase().trim();
-            const pokemon = pokemons.find(p => 
-                p.name.toLowerCase() === busca || 
+            const pokemon = pokemons.find(p =>
+                p.name.toLowerCase() === busca ||
                 p.id.toString() === busca
             );
 
@@ -25,36 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function mostrarPokemon(pokemon) {
-        areaResultado.innerHTML = `
-            <div class="pokemon-resultado">
-                <img src="${pokemon.photo_url}" alt="${pokemon.name}">
-                <h4>${pokemon.name}</h4>
-                <p>Número: #${pokemon.id}</p>
-                <p>Tipo: ${pokemon.type.join(', ')}</p>
-                <p>Região: ${pokemon.region}</p>
-                
-                <div class="stats">
-                    <p>Vida: ${pokemon.base_stats.hp}</p>
-                    <p>Ataque: ${pokemon.base_stats.attack}</p>
-                    <p>Defesa: ${pokemon.base_stats.defense}</p>
-                </div>
-                
-                <p>Evolução: ${pokemon.evolution_line.map(e => e.name).join(' → ')}</p>
-            </div>
-        `;
+       window.location.href = `/html/detalhes.html?id=${pokemon.id}`;
     }
 
-    // Busca ao clicar no botão
     botaoBusca.addEventListener('click', () => {
         if (campoBusca.value) {
             buscarPokemon(campoBusca.value);
         }
     });
 
-    // Busca ao apertar Enter
     campoBusca.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && campoBusca.value) {
             buscarPokemon(campoBusca.value);
         }
     });
+
+    // ADICIONA AQUI
+    hoverLatter('.pokedex.align-content-center.fw-bold.mt-2');
 });

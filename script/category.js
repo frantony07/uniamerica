@@ -2,7 +2,7 @@ let categoriesToBeSearchedInApi = [];
 
 async function createArrayPokemon(){
   try {
-    const response = await fetch('pokemons.json'); 
+    const response = await fetch('/pokemons.json'); 
     const arrayPokemon =  await response.json();
     return arrayPokemon;
   } catch (error) {
@@ -24,19 +24,25 @@ function createVisualitiPokemon(pokemons) {
         let divPokemon = document.createElement('div');
         divPokemon.classList.add('divPokemon');
 
+        let linkPokemon = document.createElement('a');
+        linkPokemon.href = `/html/detalhes.html?id=${pokemon.id}`;
+        linkPokemon.style.textDecoration = 'none';
+        linkPokemon.style.color = 'inherit';
+
         let pokemonId = document.createElement('h3');
         pokemonId.textContent = `#${pokemon.id}`;
-        divPokemon.appendChild(pokemonId);
+        linkPokemon.appendChild(pokemonId);
 
         let pokemonName = document.createElement('h2');
         pokemonName.textContent = pokemon.name;
-        divPokemon.appendChild(pokemonName);
+        linkPokemon.appendChild(pokemonName);
 
         let pokemonsPhoto = document.createElement('img');
         pokemonsPhoto.src = pokemon.photo_url;
         pokemonsPhoto.alt = `Photo of ${pokemon.name}`;
-        divPokemon.appendChild(pokemonsPhoto);
+        linkPokemon.appendChild(pokemonsPhoto);
       
+        divPokemon.appendChild(linkPokemon);
         fragment.appendChild(divPokemon);
     });
 
