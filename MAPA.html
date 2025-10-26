@@ -55,11 +55,12 @@
       <section class="mapa">
         <h2>Mapa Interativo das Regiões</h2>
         <div class="mapa-area">
-          <div class="ponto" style="left: 20%; top: 30%; background-color: #dc2626;"><i class="fa-solid fa-location-dot"></i></div>
-          <div class="ponto" style="left: 35%; top: 40%; background-color: #2563eb;"></div>
-          <div class="ponto" style="left: 50%; top: 50%; background-color: #16a34a;"></div>
-          <div class="ponto" style="left: 65%; top: 60%; background-color: #9333ea;"></div>
-          <div class="ponto" style="left: 80%; top: 70%; background-color: #ca8a04;"></div>
+          <div class="ponto" data-region="Kanto" style="left: 20%; top: 30%; background-color: #dc2626;"></div>
+          <div class="ponto" data-region="Johto" style="left: 35%; top: 40%; background-color: #2563eb;"></div>
+          <div class="ponto" data-region="Hoenn" style="left: 50%; top: 50%; background-color: #16a34a;"></div>
+          <div class="ponto" data-region="Sinnoh" style="left: 65%; top: 60%; background-color: #9333ea;"></div>
+          <div class="ponto" data-region="Unova" style="left: 80%; top: 70%; background-color: #ca8a04;"></div>
+          <div class="ponto" data-region="Kalos" style="left: 90%; top: 75%; background-color: #db2777;"></div>
         </div>
       </section>
 
@@ -73,9 +74,43 @@
           <li class="unova">Unova – 0 Pokémon</li>
           <li class="kalos">Kalos – 0 Pokémon</li>
         </ul>
+
+         <div id="info" class="mt-3">
+          <h5>Selecione uma região para ver os Pokémons!</h5>
+        </div>
+
       </aside>
     </main>
   </div>
+
+  <script>
+     const regioes = {
+      Kanto: ["Bulbasaur", "Charmander", "Squirtle", "Pikachu"],
+      Johto: ["Snorlax"],
+      Hoenn: ["Charizard"],
+      Sinnoh: [],
+      Unova: [],
+      Kalos: []
+    };
+
+    const pontos = document.querySelectorAll(".ponto");
+    const info = document.getElementById("info");
+
+    pontos.forEach(ponto => {
+      ponto.addEventListener("click", () => {
+        const nome = ponto.getAttribute("data-region");
+        const pokemons = regioes[nome];
+        info.innerHTML = `
+          <h5>${nome}</h5>
+          ${
+            pokemons.length > 0
+              ? "<ul>" + pokemons.map(p => `<li>${p}</li>`).join("") + "</ul>"
+              : "<p>Nenhum Pokémon encontrado nesta região.</p>"
+          }
+        `;
+      });
+    });
+  </script>
 </body>
 </html>
    
