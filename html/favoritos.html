@@ -93,18 +93,24 @@
 <body>
   <div id="navbar-placeholder"></div>
 
+
   <h1><i class="fa-solid fa-star" style="color: #FFD43B;"></i>POKÉMON FAVORITOS <i class="fa-solid fa-star" style="color: #FFD43B;"></i></h1>
   <p>Sua coleção especial de Pokémon favoritos</p>
 
-  <button class="botao-favoritos"><i class="fa-solid fa-heart"></i> 0 Pokémons Favoritos</button>
+  <button id="btn-favoritos" class="botao-favoritos"><i class="fa-solid fa-heart"></i> 0 Pokémons Favoritos</button>
 
-  <div class="vazio">
+  <!-- Container where favorite cards will be rendered -->
+  <div id="cards-container" class="d-flex flex-wrap justify-content-center gap-3" style="padding: 20px;">
+    <!-- cards will be injected here -->
+  </div>
+
+  <div id="vazio-box" class="vazio">
     <i><i class="fa-solid fa-star" style="color: #FFD43B;"></i></i>
     <p>Vazio</p>
   </div>
 
-  <h3>Nenhum Pokémon Favorito</h3>
-  <p>Você ainda não adicionou nenhum Pokémon aos seus favoritos.<br>
+  <h3 id="nenhum-title">Nenhum Pokémon Favorito</h3>
+  <p id="nenhum-desc">Você ainda não adicionou nenhum Pokémon aos seus favoritos.<br>
     Explore as categorias e clique na estrela para favoritar!</p>
 
   <div class="box-instrucoes">
@@ -117,72 +123,107 @@
   </div>
 
 </body>
-<script type="module" src="../script/main.js"></script>
+
+<!-- Load navbar and keep all logic in plain JS (no module imports) -->
+<script>
+  // Carrega o navbar (arquivo local) e injeta no placeholder
+  (async function loadNavbar(){
+    try {
+      const resp = await fetch('navbar.html');
+      if (!resp.ok) throw new Error('Erro ao carregar navbar');
+      const html = await resp.text();
+      document.getElementById('navbar-placeholder').innerHTML = html;
+    } catch (err) {
+      console.error('Falha ao carregar navbar:', err);
+    }
+  })();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6P7c0f1F2a2x6N3C4a5B8E9D0F3F2d4D5C6E7F8G9H0I1J2K3L4M5N6O7P8Q9R" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector("body");
-    const favoritosBrutos = localStorage.getItem("favoritesObject");
+  document.addEventListener('DOMContentLoaded', async () => {
+    const btnCount = document.getElementById('btn-favoritos');
+    const cardsContainer = document.getElementById('cards-container');
+    const vazioBox = document.getElementById('vazio-box');
+    const nenhumTitle = document.getElementById('nenhum-title');
+    const nenhumDesc = document.getElementById('nenhum-desc');
 
-    if (!favoritosBrutos) {
-      console.log("Nenhum favorito encontrado");
+    // Key used across the app for favorites
+    const raw = localStorage.getItem('pokemon_favoritos');
+    const favoritosIds = raw ? JSON.parse(raw) : [];
+
+    btnCount.innerHTML = `<i class="fa-solid fa-heart"></i> ${favoritosIds.length} Pokémons Favoritos`;
+
+    if (!favoritosIds || favoritosIds.length === 0) {
+      // keep the empty state visible
+      cardsContainer.style.display = 'none';
+      vazioBox.style.display = 'flex';
       return;
     }
 
-    const favoritos = JSON.parse(favoritosBrutos);
-    const listaPokemons = Object.values(favoritos);
+    // There are favorites — hide empty state elements
+    cardsContainer.style.display = 'flex';
+    vazioBox.style.display = 'none';
+    nenhumTitle.style.display = 'none';
+    nenhumDesc.style.display = 'none';
 
-    if (listaPokemons.length === 0) {
-      console.log("Lista de favoritos vazia");
-      return;
-    }
+    try {
+      const resp = await fetch('../pokemons.json');
+      const all = await resp.json();
 
-    // Remove a mensagem "vazio"
-    document.querySelector(".vazio")?.remove();
-    document.querySelector("h3")?.remove();
-    document.querySelector("p")?.remove();
+      // Map favorites IDs to pokemon objects, preserving order of favorites
+      const favoritosPokemons = favoritosIds
+        .map(id => all.find(p => Number(p.id) === Number(id)))
+        .filter(Boolean);
 
-    // Atualiza o contador no botão
-    const botaoFavoritos = document.querySelector(".botao-favoritos");
-    botaoFavoritos.innerHTML = `<i class="fa-solid fa-heart"></i> ${listaPokemons.length} Pokémons Favoritos`;
+      // Render cards
+      cardsContainer.innerHTML = '';
+      favoritosPokemons.forEach(pokemon => {
+        const card = document.createElement('div');
+        card.className = 'card p-2';
+        card.style.width = '220px';
+        card.innerHTML = `
+          <div class="card-header bg-warning text-dark"><strong>${pokemon.name}</strong></div>
+          <div class="card-body text-center">
+            <img src="${pokemon.photo_url}" alt="${pokemon.name}" style="width:120px;height:120px;object-fit:contain;">
+            <p class="card-text">Tipo: ${pokemon.type.join(', ')}</p>
+            <p class="card-text">HP: ${pokemon.base_stats.hp}</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <a href="./detalhes.html?id=${pokemon.id}" class="btn btn-sm btn-primary">Detalhes</a>
+              <button class="btn btn-sm btn-outline-danger" data-remove-id="${pokemon.id}"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        `;
 
-    // Cria o container das cartas
-    const grade = document.createElement("div");
-    grade.classList.add("d-flex", "flex-wrap", "justify-content-center", "gap-3");
-    container.appendChild(grade);
-
-    // Renderiza cada Pokémon
-    listaPokemons.forEach(pokemon => {
-      const card = document.createElement("div");
-      card.classList.add("card", "shadow", "p-2");
-      card.style.width = "160px";
-      card.style.borderRadius = "15px";
-
-      card.innerHTML = `
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png"
-             class="card-img-top" alt="${pokemon.nome}">
-        <div class="card-body">
-          <h5 class="card-title text-capitalize">${pokemon.nome}</h5>
-          <button class="btn btn-danger btn-sm remover-favorito" data-id="${pokemon.id}">
-            <i class="fa-solid fa-trash"></i> Remover
-          </button>
-        </div>
-      `;
-
-      grade.appendChild(card);
-    });
-
-    // Função para remover dos favoritos
-    document.querySelectorAll(".remover-favorito").forEach(botao => {
-      botao.addEventListener("click", (e) => {
-        const id = e.target.closest("button").dataset.id;
-        delete favoritos[id];
-        localStorage.setItem("favoritesObject", JSON.stringify(favoritos));
-        location.reload(); // recarrega para atualizar a tela
+        cardsContainer.appendChild(card);
       });
-    });
+
+      // Attach remove handlers (remove from favorites and from DOM)
+      cardsContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-remove-id]');
+        if (!btn) return;
+        const id = Number(btn.getAttribute('data-remove-id'));
+        // update localStorage
+        const updated = favoritosIds.filter(fid => Number(fid) !== id);
+        localStorage.setItem('pokemon_favoritos', JSON.stringify(updated));
+        // update UI count
+        btnCount.innerHTML = `<i class="fa-solid fa-heart"></i> ${updated.length} Pokémons Favoritos`;
+        // remove card element
+        const cardEl = btn.closest('.card');
+        if (cardEl) cardEl.remove();
+        if (updated.length === 0) {
+          cardsContainer.style.display = 'none';
+          vazioBox.style.display = 'flex';
+          nenhumTitle.style.display = 'block';
+          nenhumDesc.style.display = 'block';
+        }
+      });
+
+    } catch (err) {
+      console.error('Erro ao carregar pokemons.json', err);
+      cardsContainer.innerHTML = '<p style="color: #333">Erro ao carregar pokémons.</p>';
+    }
   });
 </script>
 
