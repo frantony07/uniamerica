@@ -78,9 +78,17 @@ const Renderizador = {
         });
     },
 
-    renderizarLinhaEvolutiva(pokemon) {
-        pokemon.evolution_line.forEach((evolucao, indice) => {
-            const badge = document.querySelector(`[data-indice-evolucao="${indice}"] [data-badge-evolucao]`);
+  renderizarLinhaEvolutiva(pokemon) {
+    pokemon.evolution_line.forEach((evolucao, indice) => {
+        const container = document.querySelector(`[data-indice-evolucao="${indice}"]`);
+        if (container) {
+            const img = container.querySelector('.evolution-circle');
+            const badge = container.querySelector('[data-badge-evolucao]');
+
+            if (img) {
+                img.src = evolucao.photo_url || `/html/img/${evolucao.name}.png`;
+            }
+
             if (badge) {
                 badge.textContent = evolucao.name;
                 if (evolucao.id === pokemon.id) {
@@ -89,7 +97,8 @@ const Renderizador = {
                     badge.className = 'badge rounded-pill bg-secondary text-white';
                 }
             }
-        });
+        }
+    });
     },
 
     renderizarFraquezasEFortalezas(pokemon) {

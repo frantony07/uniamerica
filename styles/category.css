@@ -1,19 +1,14 @@
-/* ==========================================================
-   FLUXO PRINCIPAL E CENTRALIZAÇÃO
-   ========================================================== */
 
-/* CONTAINER PRINCIPAL: .contains */
-/* Centraliza o conteúdo (filtros e resultados) e empilha-os verticalmente. */
 .contains {
     width: 100%;
     display: flex;
     flex-direction: column; 
-    align-items: center; /* Centraliza horizontalmente os blocos filhos (filtros, resultados) */
+    align-items: center; 
     gap: 15px;
-    padding: 0 10px;
+    padding: 10px 10px;
 }
 
-/* TÍTULO: .category-title */
+
 .category-title {
     color: #A8A77A; 
     text-align: center;
@@ -21,24 +16,21 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+.category-title:hover{
+    color:  linear-gradient( #ef1b17ef, #9d951a , #585856dd);
+}
 
-/* CONTAINER DOS BOTÕES: .filter-controls */
-/* Fica estático e centralizado. É a âncora (position: relative) para o menu flutuante. */
+
 .filter-controls {
     display: flex;
     gap: 20px;
     align-items: center;
     justify-content: center; 
     
-    position: relative; /* CRÍTICO: Âncora */
+    position: relative; 
     z-index: 10;
     margin-bottom: 20px; 
 }
-
-
-/* ==========================================================
-   BOTÕES DE FILTRO E SUB-MENU
-   ========================================================== */
 
 .main-category-button {
     background-color: #A8A77A;
@@ -104,6 +96,11 @@ top: 100%;
 .button-search.selected{
     border: 3px solid #00FFFF ; 
     box-shadow: 0 0 6px #17ef9cdd ;
+}
+
+.not-pokemon{
+    color: white;
+    font-size: 30px;
 }
 
 

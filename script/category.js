@@ -16,6 +16,7 @@ function createVisualitiPokemon(pokemons) {
 
     if (!pokemons || pokemons.length === 0) {
         let message = document.createElement('p');
+        message.classList.add('not-pokemon')
         message.textContent = "Nenhum Pokémon encontrado para esta seleção.";
         fragment.appendChild(message);
         return fragment;
