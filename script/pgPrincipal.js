@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async() => {
     const areaResultado = document.getElementById('procurarPokemon');
 
     const searchedPokemon = campoBusca.value;
-    const dados = await fetch('pokemons.json');
+    const dados = await fetch('../pokemons.json');
     const pokemons = await dados.json();
 
     function mostrarPokemon(pokemon) {
