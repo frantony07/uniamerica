@@ -92,13 +92,13 @@
 <body>
   <div id="navbar-placeholder"></div>
 
-  <h1>⭐ POKÉMON FAVORITOS ⭐</h1>
+  <h1><i class="fa-solid fa-star" style="color: #FFD43B;"></i>POKÉMON FAVORITOS <i class="fa-solid fa-star" style="color: #FFD43B;"></i></h1>
   <p>Sua coleção especial de Pokémon favoritos</p>
 
-  <button class="botao-favoritos">❤️ 0 Pokémons Favoritos</button>
+  <button class="botao-favoritos"><i class="fa-solid fa-heart"></i> 0 Pokémons Favoritos</button>
 
   <div class="vazio">
-    <i>⭐</i>
+    <i><i class="fa-solid fa-star" style="color: #FFD43B;"></i></i>
     <p>Vazio</p>
   </div>
 
@@ -120,5 +120,70 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6P7c0f1F2a2x6N3C4a5B8E9D0F3F2d4D5C6E7F8G9H0I1J2K3L4M5N6O7P8Q9R" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector("body");
+    const favoritosBrutos = localStorage.getItem("favoritesObject");
+
+    if (!favoritosBrutos) {
+      console.log("Nenhum favorito encontrado");
+      return;
+    }
+
+    const favoritos = JSON.parse(favoritosBrutos);
+    const listaPokemons = Object.values(favoritos);
+
+    if (listaPokemons.length === 0) {
+      console.log("Lista de favoritos vazia");
+      return;
+    }
+
+    // Remove a mensagem "vazio"
+    document.querySelector(".vazio")?.remove();
+    document.querySelector("h3")?.remove();
+    document.querySelector("p")?.remove();
+
+    // Atualiza o contador no botão
+    const botaoFavoritos = document.querySelector(".botao-favoritos");
+    botaoFavoritos.innerHTML = `<i class="fa-solid fa-heart"></i> ${listaPokemons.length} Pokémons Favoritos`;
+
+    // Cria o container das cartas
+    const grade = document.createElement("div");
+    grade.classList.add("d-flex", "flex-wrap", "justify-content-center", "gap-3");
+    container.appendChild(grade);
+
+    // Renderiza cada Pokémon
+    listaPokemons.forEach(pokemon => {
+      const card = document.createElement("div");
+      card.classList.add("card", "shadow", "p-2");
+      card.style.width = "160px";
+      card.style.borderRadius = "15px";
+
+      card.innerHTML = `
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png"
+             class="card-img-top" alt="${pokemon.nome}">
+        <div class="card-body">
+          <h5 class="card-title text-capitalize">${pokemon.nome}</h5>
+          <button class="btn btn-danger btn-sm remover-favorito" data-id="${pokemon.id}">
+            <i class="fa-solid fa-trash"></i> Remover
+          </button>
+        </div>
+      `;
+
+      grade.appendChild(card);
+    });
+
+    // Função para remover dos favoritos
+    document.querySelectorAll(".remover-favorito").forEach(botao => {
+      botao.addEventListener("click", (e) => {
+        const id = e.target.closest("button").dataset.id;
+        delete favoritos[id];
+        localStorage.setItem("favoritesObject", JSON.stringify(favoritos));
+        location.reload(); // recarrega para atualizar a tela
+      });
+    });
+  });
+</script>
+
 
 </html>
