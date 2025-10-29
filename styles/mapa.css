@@ -115,17 +115,6 @@ body {
 .unova { border-left: 5px solid #ca8a04; }
 .kalos { border-left: 5px solid #db2777; }
 
-/* Responsividade */
-@media (max-width: 991px) {
-  .titulo-map h1 {
-    font-size: 36px;
-  }
-  
-  .mapa-area {
-    height: 300px;
-  }
-}
-
 @media (max-width: 768px) {
   .titulo-map h1 {
     font-size: 28px;
