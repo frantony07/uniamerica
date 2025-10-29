@@ -7,87 +7,10 @@
   <title>Pokémon Favoritos</title>
   <link rel="stylesheet" href="../styles/home.css">
 
-  <!-- biblioteca de icones -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-</head>
-<style>
-  body {
-    background-color: white;
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    color: #333;
-    margin: 0;
-    padding: 0;
-  }
-
-  h1 {
-    color: #ff8c00;
-    font-size: 2em;
-    margin-top: 40px;
-  }
-
-  .estrela {
-    justify-items: center;
-    display: flex;
-    color: #ffcc00;
-    font-size: 1.4em;
-  }
-
-  .botao-favoritos {
-    background: linear-gradient(90deg, #ffa500, #ff4500);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 12px 30px;
-    font-size: 1em;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(255, 140, 0, 0.5);
-    margin: 20px 0;
-  }
-
- 
-  .vazio {
-
-    width: 100px;
-    height: 100px;
-    border: 3px dashed #ccc;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #aaa;
-    flex-direction: column;
-  }
-
-  .vazio i {
-    font-size: 2em;
-    color: #aaa;
-  }
-
-  .box-instrucoes {
-    background: #0d1b2a;
-    color: white;
-    width: 80%;
-    max-width: 500px;
-    margin: 40px auto;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: left;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  .box-instrucoes ul {
-    margin-top: 10px;
-  }
-
-  .box-instrucoes li {
-    margin-bottom: 6px;
-  }
-</style>
+  <link rel="stylesheet" href="../styles/favoritos.css">
 </head>
 
 <body>
@@ -99,9 +22,7 @@
 
   <button id="btn-favoritos" class="botao-favoritos"><i class="fa-solid fa-heart"></i> 0 Pokémons Favoritos</button>
 
-  <!-- Container where favorite cards will be rendered -->
   <div id="cards-container" class="d-flex flex-wrap justify-content-center gap-3" style="padding: 20px;">
-    <!-- cards will be injected here -->
   </div>
 
   <div id="vazio-box" class="vazio">
@@ -124,9 +45,7 @@
 
 </body>
 
-<!-- Load navbar and keep all logic in plain JS (no module imports) -->
 <script>
-  // Carrega o navbar (arquivo local) e injeta no placeholder
   (async function loadNavbar(){
     try {
       const resp = await fetch('navbar.html');
@@ -141,91 +60,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6P7c0f1F2a2x6N3C4a5B8E9D0F3F2d4D5C6E7F8G9H0I1J2K3L4M5N6O7P8Q9R" crossorigin="anonymous"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', async () => {
-    const btnCount = document.getElementById('btn-favoritos');
-    const cardsContainer = document.getElementById('cards-container');
-    const vazioBox = document.getElementById('vazio-box');
-    const nenhumTitle = document.getElementById('nenhum-title');
-    const nenhumDesc = document.getElementById('nenhum-desc');
 
-    // Key used across the app for favorites
-    const raw = localStorage.getItem('pokemon_favoritos');
-    const favoritosIds = raw ? JSON.parse(raw) : [];
-
-    btnCount.innerHTML = `<i class="fa-solid fa-heart"></i> ${favoritosIds.length} Pokémons Favoritos`;
-
-    if (!favoritosIds || favoritosIds.length === 0) {
-      // keep the empty state visible
-      cardsContainer.style.display = 'none';
-      vazioBox.style.display = 'flex';
-      return;
-    }
-
-    // There are favorites — hide empty state elements
-    cardsContainer.style.display = 'flex';
-    vazioBox.style.display = 'none';
-    nenhumTitle.style.display = 'none';
-    nenhumDesc.style.display = 'none';
-
-    try {
-      const resp = await fetch('../pokemons.json');
-      const all = await resp.json();
-
-      // Map favorites IDs to pokemon objects, preserving order of favorites
-      const favoritosPokemons = favoritosIds
-        .map(id => all.find(p => Number(p.id) === Number(id)))
-        .filter(Boolean);
-
-      // Render cards
-      cardsContainer.innerHTML = '';
-      favoritosPokemons.forEach(pokemon => {
-        const card = document.createElement('div');
-        card.className = 'card p-2';
-        card.style.width = '220px';
-        card.innerHTML = `
-          <div class="card-header bg-warning text-dark"><strong>${pokemon.name}</strong></div>
-          <div class="card-body text-center">
-            <img src="${pokemon.photo_url}" alt="${pokemon.name}" style="width:120px;height:120px;object-fit:contain;">
-            <p class="card-text">Tipo: ${pokemon.type.join(', ')}</p>
-            <p class="card-text">HP: ${pokemon.base_stats.hp}</p>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <a href="./detalhes.html?id=${pokemon.id}" class="btn btn-sm btn-primary">Detalhes</a>
-              <button class="btn btn-sm btn-outline-danger" data-remove-id="${pokemon.id}"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
-        `;
-
-        cardsContainer.appendChild(card);
-      });
-
-      // Attach remove handlers (remove from favorites and from DOM)
-      cardsContainer.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-remove-id]');
-        if (!btn) return;
-        const id = Number(btn.getAttribute('data-remove-id'));
-        // update localStorage
-        const updated = favoritosIds.filter(fid => Number(fid) !== id);
-        localStorage.setItem('pokemon_favoritos', JSON.stringify(updated));
-        // update UI count
-        btnCount.innerHTML = `<i class="fa-solid fa-heart"></i> ${updated.length} Pokémons Favoritos`;
-        // remove card element
-        const cardEl = btn.closest('.card');
-        if (cardEl) cardEl.remove();
-        if (updated.length === 0) {
-          cardsContainer.style.display = 'none';
-          vazioBox.style.display = 'flex';
-          nenhumTitle.style.display = 'block';
-          nenhumDesc.style.display = 'block';
-        }
-      });
-
-    } catch (err) {
-      console.error('Erro ao carregar pokemons.json', err);
-      cardsContainer.innerHTML = '<p style="color: #333">Erro ao carregar pokémons.</p>';
-    }
-  });
-</script>
+<script src="../script/favoritos.js"></script>
 
 
 </html>
