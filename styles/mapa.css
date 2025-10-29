@@ -136,10 +136,11 @@ body {
   }
   
   .mapa-area {
-    height: 250px;
+    height: 300px;
+    width:  300px;
   }
   
   .painel {
-    max-width: 100%;
+    max-width: 70%;
   }
 }
