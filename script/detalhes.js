@@ -1,6 +1,3 @@
-// ==========================================
-// PADRÃO 1: Singleton - Gerenciador de Pokémon
-// ==========================================
 const GerenciadorPokemon = (() => {
     let dadosPokemon = null;
 
@@ -23,9 +20,6 @@ const GerenciadorPokemon = (() => {
     };
 })();
 
-// ==========================================
-// PADRÃO 3: Renderer - Renderizar Dados
-// ==========================================
 const Renderizador = {
     renderizarInfoBasica(pokemon) {
         document.querySelector('[data-id-pokemon]').textContent = String(pokemon.id).padStart(3, '0');
@@ -188,9 +182,7 @@ const Renderizador = {
     }
 };
 
-// ==========================================
-// PADRÃO 5: Gerenciador de Favoritos
-// ==========================================
+
 const GerenciadorFavoritos = {
     obterFavoritos() {
         const fav = localStorage.getItem('pokemon_favoritos');
@@ -216,9 +208,6 @@ const GerenciadorFavoritos = {
     }
 };
 
-// ==========================================
-// Configurar Botão de Favoritar
-// ==========================================
 function configurarBotaoFavoritar(idPokemon) {
     const botaoFavoritar = document.querySelector('[data-favorite-btn]');
 
@@ -240,9 +229,6 @@ function configurarBotaoFavoritar(idPokemon) {
     });
 }
 
-// ==========================================
-// Inicializar Página
-// ==========================================
 document.addEventListener('DOMContentLoaded', async () => {
     const parametrosUrl = new URLSearchParams(window.location.search);
     const idPokemon = parseInt(parametrosUrl.get('id')) || 1;
