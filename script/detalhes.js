@@ -13,10 +13,6 @@ const GerenciadorPokemon = (() => {
                 return null;
             }
         },
-
-        obterPokemon() {
-            return dadosPokemon;
-        }
     };
 })();
 
@@ -158,7 +154,7 @@ const Renderizador = {
         pokemon.type.forEach(tipo => {
             fraquezasPorTipo[tipo]?.forEach(fraqueza => fraquezas.add(fraqueza));
         });
-        [...fraquezas].sort().forEach(fraqueza => {
+         [...fraquezas].sort().forEach(fraqueza => {
             const span = document.createElement('span');
             span.className = 'badge type-badge';
             span.style.background = mapaCorTipo[fraqueza] || '#0088dd';
