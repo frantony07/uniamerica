@@ -1,6 +1,4 @@
-/* ==========================================
-   PADRÃO: Cards e Estrutura
-   ========================================== */
+*/
 .card-pokemon-detalhes {
     background: rgba(26, 31, 46, 0.8);
     border: 1px solid rgba(0, 212, 255, 0.2);
@@ -17,9 +15,6 @@
     border: 2px solid #00cc00;
 }
 
-/* ==========================================
-   TÍTULOS E TEXTOS
-   ========================================== */
 .pokemon-id-title {
     font-size: 2rem;
     font-weight: bold;
@@ -55,9 +50,7 @@
     font-size: 1.1rem;
 }
 
-/* ==========================================
-   IMAGEM DO POKÉMON
-   ========================================== */
+
 .pokemon-image-circle {
     width: 150px;
     height: 150px;
@@ -75,9 +68,7 @@
     max-height: 85%;
 }
 
-/* ==========================================
-   TIPOS
-   ========================================== */
+
 .pokemon-types-container {
     display: flex;
     justify-content: center;
@@ -91,9 +82,6 @@
     border-radius: 20px;
 }
 
-/* ==========================================
-   ESTATÍSTICAS
-   ========================================== */
 .stat-item {
     margin-bottom: 1rem;
 }
@@ -116,9 +104,7 @@
     transition: width 0.3s ease;
 }
 
-/* ==========================================
-   LINHA EVOLUTIVA
-   ========================================== */
+
 .evolution-container {
     display: flex;
     justify-content: center;
@@ -159,9 +145,7 @@
     font-weight: bold;
 }
 
-/* ==========================================
-   BADGES (Fraquezas/Fortalezas)
-   ========================================== */
+
 .type-badge {
     display: inline-block;
     padding: 6px 12px;
@@ -171,9 +155,6 @@
     color: #fff;
 }
 
-/* ==========================================
-   RESPONSIVO
-   ========================================== */
 @media (max-width: 576px) {
     .pokemon-id-title {
         font-size: 1.5rem;

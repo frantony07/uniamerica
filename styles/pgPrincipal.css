@@ -136,27 +136,6 @@
     max-width: 600px;
 }
 
-.pokemon-resultado {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 15px;
-    padding: 20px;
-    margin-top: 20px;
-    color: white;
-    text-align: center;
-}
-
-.pokemon-resultado img {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 15px;
-}
-
-.pokemon-resultado h4 {
-    color: #00ffff;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
 .stats {
     background: rgba(255, 255, 255, 0.1);
     padding: 10px;
