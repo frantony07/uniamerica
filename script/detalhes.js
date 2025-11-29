@@ -4,10 +4,10 @@ const GerenciadorPokemon = (() => {
     return {
         async carregarPokemon(id) {
             try {
-                const resposta = await fetch('/pokemons.json');
-                const pokemons = await resposta.json();
-                dadosPokemon = pokemons.find(p => p.id === id);
-                return dadosPokemon;
+                const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
+                const pokemon = await resposta.json();
+                
+                return pokemon;
             } catch (erro) {
                 console.error('Erro ao carregar Pokémon:', erro);
                 return null;
@@ -19,11 +19,11 @@ const GerenciadorPokemon = (() => {
 const Renderizador = {
     renderizarInfoBasica(pokemon) {
         document.querySelector('[data-id-pokemon]').textContent = String(pokemon.id).padStart(3, '0');
-        document.querySelector('[data-nome-pokemon]').textContent = pokemon.name;
-        document.querySelector('[data-imagem-pokemon]').src = pokemon.photo_url;
+        document.querySelector('[data-nome-pokemon]').textContent = pokemon.forms.name;
+        document.querySelector('[data-imagem-pokemon]').src = pokemon.sprites.front_default;
         document.querySelector('[data-raridade]').textContent = 'Comum';
         document.querySelector('[data-descricao-pokemon]').textContent = 
-            `Um Pokémon do tipo ${pokemon.type.join('/')} com características únicas.`;
+            `Um Pokémon do tipo ${pokemon.types.type.name} com características únicas.`;
     },
 
     renderizarTipos(pokemon) {
@@ -41,7 +41,7 @@ const Renderizador = {
             'Normal': 'bg-secondary'
         };
 
-        pokemon.type.forEach(tipo => {
+        pokemon.types.type.name.forEach(tipo => {
             const span = document.createElement('span');
             span.className = `badge rounded-pill text-white me-2 pokemon-type-badge ${coresTipo[tipo] || 'bg-secondary'}`;
             span.textContent = tipo;
@@ -50,12 +50,14 @@ const Renderizador = {
     },
 
     renderizarEstatisticas(pokemon) {
-        const mapaEstat = {
-            'hp': pokemon.base_stats.hp,
-            'attack': pokemon.base_stats.attack,
-            'defense': pokemon.base_stats.defense,
-            'speed': pokemon.base_stats.speed
-        };
+        
+    const mapaEstat = {};
+    pokemon.stats.forEach(statObj => {
+        const nombre = statObj.stat.name;  
+        const valor = statObj.base_stat;   
+        mapaEstat[nombre] = valor;
+    });
+
 
         Object.entries(mapaEstat).forEach(([chave, valor]) => {
             const itemEstat = document.querySelector(`[data-estatistica="${chave}"]`);
@@ -235,8 +237,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         Renderizador.renderizarInfoBasica(pokemon);
         Renderizador.renderizarTipos(pokemon);
         Renderizador.renderizarEstatisticas(pokemon);
-        Renderizador.renderizarLinhaEvolutiva(pokemon);
-        Renderizador.renderizarFraquezasEFortalezas(pokemon);
+        //Renderizador.renderizarLinhaEvolutiva(pokemon);
+        //Renderizador.renderizarFraquezasEFortalezas(pokemon);
         configurarBotaoFavoritar(idPokemon);
     } else {
         console.error('Pokémon não encontrado');

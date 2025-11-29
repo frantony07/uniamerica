@@ -2,7 +2,7 @@ let categoriesToBeSearchedInApi = [];
 
 async function createArrayPokemon(){
   try {
-    const response = await fetch('/pokemons.json'); 
+    const response = await fetch(`https://pokeapi.co/api/v2/type/${categoriesToBeSearchedInApi}`);
     const arrayPokemon =  await response.json();
     return arrayPokemon;
   } catch (error) {
@@ -11,7 +11,7 @@ async function createArrayPokemon(){
   }
 }
 
-function createVisualitiPokemon(pokemons) {
+async function createVisualitiPokemon(pokemons){
     let fragment = document.createDocumentFragment();
 
     if (!pokemons || pokemons.length === 0) {
@@ -20,35 +20,58 @@ function createVisualitiPokemon(pokemons) {
         message.textContent = "Nenhum Pokémon encontrado para esta seleção.";
         fragment.appendChild(message);
         return fragment;
-    }
-    pokemons.forEach((pokemon) => {
-        let divPokemon = document.createElement('div');
-        divPokemon.classList.add('divPokemon');
+    }//crea una funcion de esto aqui , pasa como parametro la url del pokemon passa a json y despues crea el fragment haz eso com todos los pokemones 
+    
+  const element = await Promise.all(
+    pokemons.map(urlPokemon => createFragmentPokemons( urlPokemon))
+  );
 
-        let linkPokemon = document.createElement('a');
-        linkPokemon.href = `/html/detalhes.html?id=${pokemon.id}`;
-        linkPokemon.style.textDecoration = 'none';
-        linkPokemon.style.color = 'inherit';
-
-        let pokemonId = document.createElement('h3');
-        pokemonId.textContent = `#${pokemon.id}`;
-        linkPokemon.appendChild(pokemonId);
-
-        let pokemonName = document.createElement('h2');
-        pokemonName.textContent = pokemon.name;
-        linkPokemon.appendChild(pokemonName);
-
-        let pokemonsPhoto = document.createElement('img');
-        pokemonsPhoto.src = pokemon.photo_url;
-        pokemonsPhoto.alt = `Photo of ${pokemon.name}`;
-        linkPokemon.appendChild(pokemonsPhoto);
-      
-        divPokemon.appendChild(linkPokemon);
-        fragment.appendChild(divPokemon);
-    });
+  element.forEach(el => fragment.appendChild(el));
 
     return fragment; 
 }
+
+ async function createFragmentPokemons( urlPokemon){
+  try {
+    const response = await fetch(urlPokemon);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const pokemon =  await response.json();
+    
+    let divPokemon = document.createElement('div');
+    divPokemon.classList.add('divPokemon');
+    
+    let linkPokemon = document.createElement('a');
+    linkPokemon.href = `/html/detalhes.html?id=${pokemon.id}`;
+    linkPokemon.style.textDecoration = 'none';
+    linkPokemon.style.color = 'inherit';
+    
+    let pokemonId = document.createElement('h3');
+    pokemonId.textContent = pokemon.id;
+    linkPokemon.appendChild(pokemonId);
+    
+    let pokemonName = document.createElement('h2');
+    pokemonName.textContent = pokemon.name;
+    linkPokemon.appendChild(pokemonName);
+    
+    let pokemonsPhoto = document.createElement('img');
+    pokemonsPhoto.src = pokemon.sprites.front_default ;
+    pokemonsPhoto.alt = `Photo of ${pokemon.id}`;
+    linkPokemon.appendChild(pokemonsPhoto);
+    
+    divPokemon.appendChild(linkPokemon);
+    return divPokemon;
+
+  } catch (error) {
+    console.error('erro na requisição do json ', error)
+    
+    const fallback = document.createElement('p');
+    fallback.classList.add('pokemon-error');
+    fallback.textContent = 'Erro ao carregar o Pokémon.';
+    
+
+  }
+  };
+
 
 async function searchedCategory(){
   let  arrayPokemonsSelected =[];
@@ -58,15 +81,13 @@ async function searchedCategory(){
     return []; 
   } 
   const arrayPokemons = await createArrayPokemon();
-  arrayPokemons.forEach(pokemon =>{
-    const typeIsSelected = categoriesToBeSearchedInApi.some(category => 
-        pokemon.type.includes(category)
-    );
+  
 
-    if (typeIsSelected){
-      arrayPokemonsSelected.push(pokemon)
-    }
-  });
+  arrayPokemonsSelected = arrayPokemons.pokemon.map(item => item.pokemon.url);
+
+ 
+  arrayPokemonsSelected.forEach(pokemom => console.log(pokemom));
+
 
   return arrayPokemonsSelected;
 }
@@ -88,7 +109,7 @@ function createButtonOfSearched(containerPokemons){
       }
     
    
-      const newPokemonFragment = createVisualitiPokemon(selectedPokemonArray);
+      const newPokemonFragment = await createVisualitiPokemon(selectedPokemonArray);
       containerPokemons.innerHTML = '';
       containerPokemons.appendChild(newPokemonFragment);
 
