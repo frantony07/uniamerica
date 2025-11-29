@@ -36,7 +36,6 @@ const Renderizador = {
     if (!container) return;
     container.innerHTML = '';
 
-    // Usa claves en minúsculas para coincidir con la API (que trae "fire", "water", etc.)
     const coresTipo = {
         'grass': 'bg-success',
         'poison': 'bg-danger',
@@ -48,17 +47,15 @@ const Renderizador = {
         'normal': 'bg-secondary'
     };
 
-    // Extrae los nombres de tipo desde el array
     const tipos = Array.isArray(pokemon.types)
         ? pokemon.types.map(t => t?.type?.name).filter(Boolean)
         : [];
 
-    // Crea los badges
     tipos.forEach(tipo => {
         const span = document.createElement('span');
         const classeCor = coresTipo[tipo.toLowerCase()] || 'bg-secondary';
         span.className = `badge rounded-pill text-white me-2 pokemon-type-badge ${classeCor}`;
-        span.textContent = tipo; // se muestra tal como viene (ej. "fire")
+        span.textContent = tipo; 
         container.appendChild(span);
     });
     },
