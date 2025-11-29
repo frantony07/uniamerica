@@ -22,32 +22,47 @@ const Renderizador = {
         document.querySelector('[data-nome-pokemon]').textContent = pokemon.forms.name;
         document.querySelector('[data-imagem-pokemon]').src = pokemon.sprites.front_default;
         document.querySelector('[data-raridade]').textContent = 'Comum';
+        const tipos = Array.isArray(pokemon.types) ? pokemon.types.map(t => t.type?.name).filter(Boolean) : [];
+
+        const tiposFormatados = tipos.join(' e ') || 'Indefinido';
+
         document.querySelector('[data-descricao-pokemon]').textContent = 
-            `Um Pokémon do tipo ${pokemon.types.type.name} com características únicas.`;
+           `Um Pokémon do tipo ${tiposFormatados} com características únicas.`;
     },
 
+    
     renderizarTipos(pokemon) {
-        const container = document.querySelector('[data-tipos-pokemon]');
-        container.innerHTML = '';
+    const container = document.querySelector('[data-tipos-pokemon]');
+    if (!container) return;
+    container.innerHTML = '';
 
-        const coresTipo = {
-            'Grass': 'bg-success',
-            'Poison': 'bg-danger',
-            'Fire': 'bg-danger',
-            'Water': 'bg-info',
-            'Electric': 'bg-warning',
-            'Bug': 'bg-success',
-            'Flying': 'bg-primary',
-            'Normal': 'bg-secondary'
-        };
+    // Usa claves en minúsculas para coincidir con la API (que trae "fire", "water", etc.)
+    const coresTipo = {
+        'grass': 'bg-success',
+        'poison': 'bg-danger',
+        'fire': 'bg-danger',
+        'water': 'bg-info',
+        'electric': 'bg-warning',
+        'bug': 'bg-success',
+        'flying': 'bg-primary',
+        'normal': 'bg-secondary'
+    };
 
-        pokemon.types.type.name.forEach(tipo => {
-            const span = document.createElement('span');
-            span.className = `badge rounded-pill text-white me-2 pokemon-type-badge ${coresTipo[tipo] || 'bg-secondary'}`;
-            span.textContent = tipo;
-            container.appendChild(span);
-        });
+    // Extrae los nombres de tipo desde el array
+    const tipos = Array.isArray(pokemon.types)
+        ? pokemon.types.map(t => t?.type?.name).filter(Boolean)
+        : [];
+
+    // Crea los badges
+    tipos.forEach(tipo => {
+        const span = document.createElement('span');
+        const classeCor = coresTipo[tipo.toLowerCase()] || 'bg-secondary';
+        span.className = `badge rounded-pill text-white me-2 pokemon-type-badge ${classeCor}`;
+        span.textContent = tipo; // se muestra tal como viene (ej. "fire")
+        container.appendChild(span);
+    });
     },
+
 
     renderizarEstatisticas(pokemon) {
         
@@ -61,14 +76,26 @@ const Renderizador = {
 
         Object.entries(mapaEstat).forEach(([chave, valor]) => {
             const itemEstat = document.querySelector(`[data-estatistica="${chave}"]`);
-            if (itemEstat) {
-                const spanValor = itemEstat.querySelector('.stat-value');
-                const barraEstat = itemEstat.querySelector('.stat-bar');
-                spanValor.textContent = valor;
-                barraEstat.style.width = `${(valor / 150) * 100}%`;
-            }
-        });
-    },
+            
+    if (!itemEstat) return; 
+    
+    const spanValor = itemEstat.querySelector('.stat-value');
+    const barraEstat = itemEstat.querySelector('.stat-bar');
+
+    if (spanValor) spanValor.textContent = valor;
+
+    if (barraEstat) {
+      const pct = Math.max(0, Math.min(100, (valor / 150) * 100));
+      barraEstat.style.width = `${pct}%`;
+
+      barraEstat.setAttribute('role', 'progressbar');
+      barraEstat.setAttribute('aria-valuemin', '0');
+      barraEstat.setAttribute('aria-valuemax', '150');
+      barraEstat.setAttribute('aria-valuenow', String(valor));
+    }
+  });
+},
+
 
   renderizarLinhaEvolutiva(pokemon) {
     pokemon.evolution_line.forEach((evolucao, indice) => {
