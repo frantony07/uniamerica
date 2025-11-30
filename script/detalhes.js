@@ -272,14 +272,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const pokemon = await CarregadorPokemon.carregar(idPokemon);
 
-    if (pokemon) {
-        Renderizador.renderizarInfoBasica(pokemon);
-        Renderizador.renderizarTipos(pokemon);
-        Renderizador.renderizarEstatisticas(pokemon);
-        //Renderizador.renderizarLinhaEvolutiva(pokemon);
-        //Renderizador.renderizarFraquezasEFortalezas(pokemon);
-        configurarBotaoFavoritar(idPokemon);
-    } else {
-        console.error('Pokémon não encontrado');
-    }
+    RenderizadorPokemon.renderizarInfoBasica(pokemon);
+    RenderizadorPokemon.renderizarTipos(pokemon);
+    RenderizadorPokemon.renderizarEstatisticas(pokemon);
+    RenderizadorPokemon.renderizarLinhaEvolutiva(pokemon);
+    RenderizadorPokemon.renderizarFraquezasEFortalezas(pokemon);
+
+    configurarBotaoFavoritar(idPokemon);
 });

@@ -23,10 +23,17 @@
     vazioBox.style.display = 'none';
     nenhumTitle.style.display = 'none';
     nenhumDesc.style.display = 'none';
+    
+    console.log(favoritosIds)
 
     try {
-      const resp = await fetch('../pokemons.json');
+      const resp = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
       const all = await resp.json();
+
+    } catch (err) {
+      console.error('Erro ao carregar pokemons.json', err);
+      cardsContainer.innerHTML = '<p style="color: #333">Erro ao carregar pokémons.</p>';
+    }
 
       // Map favorites IDs to pokemon objects, preserving order of favorites
       const favoritosPokemons = favoritosIds
@@ -76,8 +83,4 @@
         }
       });
 
-    } catch (err) {
-      console.error('Erro ao carregar pokemons.json', err);
-      cardsContainer.innerHTML = '<p style="color: #333">Erro ao carregar pokémons.</p>';
-    }
   });

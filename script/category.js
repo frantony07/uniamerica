@@ -1,10 +1,10 @@
 let categoriesToBeSearchedInApi = [];
 
-async function createArrayPokemon(){
+async function createArrayPokemon(categoria){
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/type/${categoriesToBeSearchedInApi}`);
+    const response = await fetch(`https://pokeapi.co/api/v2/type/${categoria}`);
     const arrayPokemon =  await response.json();
-    return arrayPokemon;
+    return arrayPokemon.pokemon;
   } catch (error) {
     console.error('Erro ao carregar os dados dos Pokémon:', error);
     return [];
@@ -73,6 +73,34 @@ async function createVisualitiPokemon(pokemons){
   };
 
 
+
+
+function extractPokemonId(url) {
+  if (typeof url !== 'string') return null;
+  
+  const parts = url.replace(/\/+$/, '').split('/');
+  const idStr = parts[parts.length - 1];
+  const id = Number(idStr);
+  return Number.isFinite(id) ? id : null;
+}
+
+
+function sortPokemonUrlsAsc(urls, opts = { deduplicate: true }) {
+  if (!Array.isArray(urls)) return [];
+
+  const base = opts.deduplicate ? Array.from(new Set(urls)) : [...urls];
+
+  const withIds = base
+    .map(url => ({ url, id: extractPokemonId(url) }))
+    .filter(item => item.id !== null);
+
+
+  withIds.sort((a, b) => a.id - b.id);
+
+
+  return withIds.map(item => item.url);
+}
+
 async function searchedCategory(){
   let  arrayPokemonsSelected =[];
   if ( !categoriesToBeSearchedInApi || categoriesToBeSearchedInApi.length === 0){
@@ -80,16 +108,16 @@ async function searchedCategory(){
     
     return []; 
   } 
-  const arrayPokemons = await createArrayPokemon();
-  
-
-  arrayPokemonsSelected = arrayPokemons.pokemon.map(item => item.pokemon.url);
-
  
+  const arrayPokemons = await Promise.all(categoriesToBeSearchedInApi.map(category => createArrayPokemon(category)))
+  const arrayPokemonslist = arrayPokemons.flat()
+
+  arrayPokemonsSelected = await arrayPokemonslist.map(item => item.pokemon.url);
+  const endArray = sortPokemonUrlsAsc(arrayPokemonsSelected)
   arrayPokemonsSelected.forEach(pokemom => console.log(pokemom));
 
 
-  return arrayPokemonsSelected;
+  return endArray;
 }
 
 
@@ -98,8 +126,11 @@ function createButtonOfSearched(containerPokemons){
    buttonSearch.classList.add('button-search');
    buttonSearch.textContent = 'pesquisar';
    
-
    buttonSearch.addEventListener('click' , async () => {
+     containerPokemons.textContent = "realizando pesquisa";
+     containerPokemons.style.color= 'white'
+     
+     
       
       const selectedPokemonArray = await searchedCategory();
      
@@ -186,16 +217,13 @@ export function category(){
     event.stopPropagation();
     const isVisible = subButtonsContainer.style.display === 'flex';
     subButtonsContainer.style.display = isVisible ? 'none' : 'flex';
-    mainButton.textContent = isVisible ? 'hide types ▲' : 'show types ▼';
+    mainButton.textContent = isVisible ?   'show types ▼': 'hide types ▲';
   });
 
   document.addEventListener('click', () =>{
-   
-    if(mainButton.textContent == 'hide types ▲' && subButtonsContainer.style.display == 'flex'){
-        subButtonsContainer.style.display = 'none';
-        mainButton.textContent = 'show types ▼';
+ 
         buttonSearch.classList.remove('selected');
-    }
+    
   });
 
   categoryDiv.appendChild(filterControls);
