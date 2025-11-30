@@ -1,33 +1,59 @@
-// UM SÓ DOMContentLoaded
-document.addEventListener('DOMContentLoaded', async() => {
+document.addEventListener('DOMContentLoaded', async () => {
     const campoBusca = document.getElementById('pokemonBuscado');
     const botaoBusca = document.getElementById('botaoBusca');
     const areaResultado = document.getElementById('procurarPokemon');
+    const spinner = document.getElementById('spinner');
 
-    const searchedPokemon = campoBusca.value;
-    const dados = await fetch('../pokemons.json');
-    const pokemons = await dados.json();
-
-    function mostrarPokemon(pokemon) {
-       window.location.href = `/html/detalhes.html?id=${pokemon.id}`;
+    let listaPokemons = [];
+    try {
+        const listaReq = await fetch("https://pokeapi.co/api/v2/pokemon?limit=2000");//mudei para pegar da api
+        const listaJson = await listaReq.json();
+        listaPokemons = listaJson.results;
+    } catch (e) {
+        console.error("Erro ao carregar lista de Pokémons.");
     }
 
-    botaoBusca.addEventListener('click', () => {
-    const searchedPokemon = campoBusca.value.trim(); // garante que espaços não atrapalhem
-    if (searchedPokemon) {
-        const pokemonEncontrado = pokemons.find(p => 
-            p.name.toLowerCase() === searchedPokemon.toLowerCase() || 
-            p.id.toString() === searchedPokemon
+    function mostrarPokemon(id) {
+        window.location.href = `/html/detalhes.html?id=${id}`;
+    }
+
+    botaoBusca.addEventListener('click', async () => {
+        const termo = campoBusca.value.trim().toLowerCase();
+        if (!termo) return;
+
+        areaResultado.innerHTML = "";
+        spinner.style.display = "inline-block";
+
+        if (!isNaN(termo)) {
+            try {
+                const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${termo}`);
+                if (!resp.ok) throw new Error();
+                const pokemon = await resp.json();
+                spinner.style.display = "none";
+                return mostrarPokemon(pokemon.id);
+            } catch {
+                spinner.style.display = "none";
+                return areaResultado.innerHTML = "<p>Pokémon não encontrado</p>";
+            }
+        }
+
+        const encontrado = listaPokemons.find(p =>
+            p.name.startsWith(termo)//busca com as iniciais
         );
 
-        if (pokemonEncontrado) {
-            mostrarPokemon(pokemonEncontrado);
-        } else {
-            areaResultado.innerHTML = '<p>Pokémon não encontrado</p>';
+        if (!encontrado) {
+            spinner.style.display = "none";
+            return areaResultado.innerHTML = "<p>Pokémon não encontrado</p>";
         }
-    }
-});
 
-
-
+        try {
+            const resp = await fetch(encontrado.url);
+            const pokemon = await resp.json();
+            spinner.style.display = "none";
+            mostrarPokemon(pokemon.id);
+        } catch {
+            spinner.style.display = "none";
+            areaResultado.innerHTML = "<p>Erro ao carregar Pokémon</p>";
+        }
+    });
 });

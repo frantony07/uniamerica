@@ -1,270 +1,282 @@
-const GerenciadorPokemon = (() => {
-    let dadosPokemon = null;
+const CarregadorPokemon = (() => {
+    const URL_BASE = "https://pokeapi.co/api/v2";
+
+    async function carregarCadeiaEvolucao(url) {
+        const resposta = await fetch(url);
+        return resposta.json();
+    }
+
+    async function carregarEspecie(url) {
+        const resposta = await fetch(url);
+        return resposta.json();
+    }
+
+    async function carregarPokemonCompleto(id) {
+        try {
+            const respostaPokemon = await fetch(`${URL_BASE}/pokemon/${id}`);
+            const pokemon = await respostaPokemon.json();
+
+            const especie = await carregarEspecie(pokemon.species.url);
+            const cadeiaEvolucao = await carregarCadeiaEvolucao(especie.evolution_chain.url);
+
+            return {
+                ...pokemon,
+                cadeiaEvolucao,
+                especie
+            };
+        } catch (erro) {
+            console.error("Erro ao carregar Pokémon:", erro);
+            return null;
+        }
+    }
 
     return {
-        async carregarPokemon(id) {
-            try {
-                const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
-                const pokemon = await resposta.json();
-                
-                return pokemon;
-            } catch (erro) {
-                console.error('Erro ao carregar Pokémon:', erro);
-                return null;
-            }
-        },
+        carregar: carregarPokemonCompleto
     };
 })();
 
-const Renderizador = {
-    renderizarInfoBasica(pokemon) {
-        document.querySelector('[data-id-pokemon]').textContent = String(pokemon.id).padStart(3, '0');
-        document.querySelector('[data-nome-pokemon]').textContent = pokemon.forms.name;
-        document.querySelector('[data-imagem-pokemon]').src = pokemon.sprites.front_default;
-        document.querySelector('[data-raridade]').textContent = 'Comum';
-        const tipos = Array.isArray(pokemon.types) ? pokemon.types.map(t => t.type?.name).filter(Boolean) : [];
 
-        const tiposFormatados = tipos.join(' e ') || 'Indefinido';
+const RenderizadorPokemon = {
+    corsPorTipo: {
+        grama: "bg-success",
+        veneno: "bg-danger",
+        fogo: "bg-danger",
+        agua: "bg-info",
+        eletrico: "bg-warning",
+        inseto: "bg-success",
+        voador: "bg-primary",
+        normal: "bg-secondary",
+        terra: "bg-warning",
+        psiquico: "bg-danger",
+        pedra: "bg-secondary",
+        gelo: "bg-info",
+        dragao: "bg-primary",
+        escuro: "bg-dark",
+        aco: "bg-secondary",
+        fada: "bg-pink"
+    },
+
+    renderizarInfoBasica(pokemon) {
+        document.querySelector('[data-id-pokemon]').textContent = 
+            String(pokemon.id).padStart(3, '0');
+
+        document.querySelector('[data-nome-pokemon]').textContent = 
+            pokemon.forms[0].name;
+
+        document.querySelector('[data-imagem-pokemon]').src = 
+            pokemon.sprites.front_default;
+
+        document.querySelector('[data-raridade]').textContent = "Comum";
+
+        const tipos = pokemon.types.map(t => t.type.name);
+        const descricaoTipos = tipos.join(" e ");
 
         document.querySelector('[data-descricao-pokemon]').textContent = 
-           `Um Pokémon do tipo ${tiposFormatados} com características únicas.`;
+            `Um Pokémon do tipo ${descricaoTipos} com características únicas.`;
     },
 
-    
     renderizarTipos(pokemon) {
-    const container = document.querySelector('[data-tipos-pokemon]');
-    if (!container) return;
-    container.innerHTML = '';
+        const container = document.querySelector('[data-tipos-pokemon]');
+        container.innerHTML = "";
 
-    const coresTipo = {
-        'grass': 'bg-success',
-        'poison': 'bg-danger',
-        'fire': 'bg-danger',
-        'water': 'bg-info',
-        'electric': 'bg-warning',
-        'bug': 'bg-success',
-        'flying': 'bg-primary',
-        'normal': 'bg-secondary'
-    };
+        pokemon.types.forEach(obj => {
+            const nomeTipo = obj.type.name;
+            const classCor = this.corsPorTipo[nomeTipo] || "bg-secondary";
 
-    const tipos = Array.isArray(pokemon.types)
-        ? pokemon.types.map(t => t?.type?.name).filter(Boolean)
-        : [];
+            const badge = document.createElement("span");
+            badge.className = `badge rounded-pill text-white me-2 ${classCor}`;
+            badge.textContent = nomeTipo;
 
-    tipos.forEach(tipo => {
-        const span = document.createElement('span');
-        const classeCor = coresTipo[tipo.toLowerCase()] || 'bg-secondary';
-        span.className = `badge rounded-pill text-white me-2 pokemon-type-badge ${classeCor}`;
-        span.textContent = tipo; 
-        container.appendChild(span);
-    });
+            container.appendChild(badge);
+        });
     },
-
 
     renderizarEstatisticas(pokemon) {
-        
-    const mapaEstat = {};
-    pokemon.stats.forEach(statObj => {
-        const nombre = statObj.stat.name;  
-        const valor = statObj.base_stat;   
-        mapaEstat[nombre] = valor;
-    });
+        const estatisticas = {};
+        pokemon.stats.forEach(stat => {
+            estatisticas[stat.stat.name] = stat.base_stat;
+        });
 
+        Object.entries(estatisticas).forEach(([nomeEstat, valor]) => {
+            const elemento = document.querySelector(`[data-estatistica="${nomeEstat}"]`);
+            if (!elemento) return;
 
-        Object.entries(mapaEstat).forEach(([chave, valor]) => {
-            const itemEstat = document.querySelector(`[data-estatistica="${chave}"]`);
-            
-    if (!itemEstat) return; 
-    
-    const spanValor = itemEstat.querySelector('.stat-value');
-    const barraEstat = itemEstat.querySelector('.stat-bar');
+            const campoValor = elemento.querySelector('.stat-value');
+            const barraProgresso = elemento.querySelector('.stat-bar');
 
-    if (spanValor) spanValor.textContent = valor;
+            if (campoValor) campoValor.textContent = valor;
 
-    if (barraEstat) {
-      const pct = Math.max(0, Math.min(100, (valor / 150) * 100));
-      barraEstat.style.width = `${pct}%`;
-
-      barraEstat.setAttribute('role', 'progressbar');
-      barraEstat.setAttribute('aria-valuemin', '0');
-      barraEstat.setAttribute('aria-valuemax', '150');
-      barraEstat.setAttribute('aria-valuenow', String(valor));
-    }
-  });
-},
-
-
-  renderizarLinhaEvolutiva(pokemon) {
-    pokemon.evolution_line.forEach((evolucao, indice) => {
-        const container = document.querySelector(`[data-indice-evolucao="${indice}"]`);
-        if (container) {
-            const img = container.querySelector('.evolution-circle');
-            const badge = container.querySelector('[data-badge-evolucao]');
-
-            if (img) {
-                img.src = evolucao.photo_url || `/html/img/${evolucao.name}.png`;
+            if (barraProgresso) {
+                const percentual = Math.min(100, (valor / 150) * 100);
+                barraProgresso.style.width = `${percentual}%`;
             }
-
-            if (badge) {
-                badge.textContent = evolucao.name;
-                if (evolucao.id === pokemon.id) {
-                    badge.className = 'badge rounded-pill bg-info text-dark';
-                } else {
-                    badge.className = 'badge rounded-pill bg-secondary text-white';
-                }
-            }
-        }
-    });
+        });
     },
 
-    renderizarFraquezasEFortalezas(pokemon) {
-        const fraquezasPorTipo = {
-            'Grass': ['Fire', 'Ice', 'Poison', 'Flying', 'Bug'],
-            'Poison': ['Ground', 'Psychic'],
-            'Fire': ['Water', 'Ground', 'Rock'],
-            'Water': ['Electric', 'Grass'],
-            'Electric': ['Ground'],
-            'Bug': ['Fire', 'Flying', 'Rock'],
-            'Flying': ['Electric', 'Ice', 'Rock'],
-            'Normal': ['Fighting'],
-            'Psychic': ['Bug', 'Ghost', 'Dark'],
-            'Ghost': ['Ghost', 'Dark'],
-            'Ground': ['Water', 'Grass', 'Ice'],
-            'Rock': ['Water', 'Grass', 'Fighting', 'Ground', 'Steel'],
-            'Dark': ['Fighting', 'Bug', 'Fairy'],
-            'Steel': ['Fire', 'Water', 'Ground'],
-            'Fairy': ['Poison', 'Steel']
+    renderizarLinhaEvolutiva(pokemon) {
+        const cadeia = pokemon.cadeiaEvolucao.chain;
+        const nomesPokemon = [];
+
+        const percorrerCadeia = (no) => {
+            nomesPokemon.push(no.species.name);
+            if (no.evolves_to.length > 0) {
+                percorrerCadeia(no.evolves_to[0]);
+            }
         };
 
-        const fortalezasPorTipo = {
-            'Grass': ['Water', 'Ground', 'Rock'],
-            'Poison': ['Grass', 'Bug', 'Fairy'],
-            'Fire': ['Grass', 'Ice', 'Bug', 'Steel'],
-            'Water': ['Fire', 'Ground', 'Rock'],
-            'Electric': ['Water', 'Flying'],
-            'Bug': ['Grass', 'Psychic', 'Dark'],
-            'Flying': ['Grass', 'Fighting', 'Bug'],
-            'Normal': [],
-            'Psychic': ['Fighting', 'Poison'],
-            'Ghost': ['Ghost', 'Psychic'],
-            'Ground': ['Poison', 'Rock'],
-            'Rock': ['Fire', 'Ice', 'Flying', 'Bug'],
-            'Dark': ['Ghost', 'Dark'],
-            'Steel': ['Rock', 'Ice', 'Fairy'],
-            'Fairy': ['Fighting', 'Bug', 'Dark']
-        };
+        percorrerCadeia(cadeia);
 
-        const mapaCorTipo = {
-            'Fire': '#f08030',
-            'Water': '#6890f0',
-            'Grass': '#78c850',
-            'Electric': '#f8d030',
-            'Ice': '#98d8d8',
-            'Fighting': '#c03028',
-            'Poison': '#a040a0',
-            'Ground': '#e0c068',
-            'Flying': '#a890f0',
-            'Psychic': '#f85888',
-            'Bug': '#a8b820',
-            'Rock': '#b8a038',
-            'Ghost': '#705898',
-            'Dragon': '#7038f8',
-            'Dark': '#705848',
-            'Steel': '#b8b8d0',
-            'Fairy': '#ee99ac'
-        };
+        nomesPokemon.forEach((nome, indice) => {
+            const container = document.querySelector(`[data-indice-evolucao="${indice}"]`);
+            if (!container) return;
 
-        const containerFraquezas = document.querySelector('[data-fraquezas]');
-        containerFraquezas.innerHTML = '';
+            fetch(`https://pokeapi.co/api/v2/pokemon/${nome}`)
+                .then(r => r.json())
+                .then(pokemon => {
+                    const imagem = container.querySelector(".evolution-circle");
+                    const badge = container.querySelector("[data-badge-evolucao]");
+
+                    imagem.src = pokemon.sprites.front_default;
+                    badge.textContent = pokemon.name;
+                });
+        });
+    },
+
+    async renderizarFraquezasEFortalezas(pokemon) {
+        const tiposAtivos = pokemon.types.map(t => t.type.name);
+
         const fraquezas = new Set();
-        pokemon.type.forEach(tipo => {
-            fraquezasPorTipo[tipo]?.forEach(fraqueza => fraquezas.add(fraqueza));
-        });
-         [...fraquezas].sort().forEach(fraqueza => {
-            const span = document.createElement('span');
-            span.className = 'badge type-badge';
-            span.style.background = mapaCorTipo[fraqueza] || '#0088dd';
-            span.textContent = fraqueza;
-            containerFraquezas.appendChild(span);
-        });
-
-        const containerFortalezas = document.querySelector('[data-fortalezas]');
-        containerFortalezas.innerHTML = '';
         const fortalezas = new Set();
-        pokemon.type.forEach(tipo => {
-            fortalezasPorTipo[tipo]?.forEach(fortaleza => fortalezas.add(fortaleza));
-        });
-        [...fortalezas].sort().forEach(fortaleza => {
-            const span = document.createElement('span');
-            span.className = 'badge type-badge';
-            span.style.background = mapaCorTipo[fortaleza] || '#0088dd';
-            span.textContent = fortaleza;
-            containerFortalezas.appendChild(span);
-        });
-    }
-};
 
+        for (const tipo of tiposAtivos) {
+            const resposta = await fetch(`https://pokeapi.co/api/v2/type/${tipo}`);
+            const dados = await resposta.json();
 
-const GerenciadorFavoritos = {
-    obterFavoritos() {
-        const fav = localStorage.getItem('pokemon_favoritos');
-        return fav ? JSON.parse(fav) : [];
-    },
+            dados.damage_relations.double_damage_from.forEach(t => fraquezas.add(t.name));
 
-    adicionarFavorito(id) {
-        const favoritos = this.obterFavoritos();
-        if (!favoritos.includes(id)) {
-            favoritos.push(id);
-            localStorage.setItem('pokemon_favoritos', JSON.stringify(favoritos));
+            dados.damage_relations.double_damage_to.forEach(t => fortalezas.add(t.name));
         }
+
+        const coresTipo = {
+            fogo: "#f08030",
+            agua: "#6890f0",
+            grama: "#78c850",
+            eletrico: "#f8d030",
+            gelo: "#98d8d8",
+            lutador: "#c03028",
+            veneno: "#a040a0",
+            terra: "#e0c068",
+            voador: "#a890f0",
+            psiquico: "#f85888",
+            inseto: "#a8b820",
+            pedra: "#b8a038",
+            fantasma: "#705898",
+            dragao: "#7038f8",
+            escuro: "#705848",
+            aco: "#b8b8d0",
+            fada: "#ee99ac"
+        };
+
+        this._renderizarBadges("[data-fraquezas]", fraquezas, coresTipo);
+        this._renderizarBadges("[data-fortalezas]", fortalezas, coresTipo);
     },
 
-    removerFavorito(id) {
-        const favoritos = this.obterFavoritos();
-        const filtrado = favoritos.filter(fav => fav !== id);
-        localStorage.setItem('pokemon_favoritos', JSON.stringify(filtrado));
-    },
+    _renderizarBadges(seletor, conjunto, cores) {
+        const container = document.querySelector(seletor);
+        container.innerHTML = "";
 
-    ehFavorito(id) {
-        return this.obterFavoritos().includes(id);
+        [...conjunto].forEach(nome => {
+            const badge = document.createElement("span");
+            badge.className = "badge type-badge";
+            badge.style.background = cores[nome] || "#888";
+            badge.textContent = nome;
+            container.appendChild(badge);
+        });
     }
 };
+
+
+const GerenciadorFavoritos = (() => {
+    const CHAVE_STORAGE = "pokemon_favoritos";
+
+    function obterTodos() {
+        const dados = localStorage.getItem(CHAVE_STORAGE);
+        return dados ? JSON.parse(dados) : [];
+    }
+
+    function salvar(lista) {
+        localStorage.setItem(CHAVE_STORAGE, JSON.stringify(lista));
+    }
+
+    function adicionar(id) {
+        const lista = obterTodos();
+        if (!lista.includes(id)) {
+            lista.push(id);
+            salvar(lista);
+        }
+    }
+
+    function remover(id) {
+        const lista = obterTodos().filter(favorito => favorito !== id);
+        salvar(lista);
+    }
+
+    function contem(id) {
+        return obterTodos().includes(id);
+    }
+
+    function alternar(id) {
+        if (contem(id)) {
+            remover(id);
+            return false;
+        } else {
+            adicionar(id);
+            return true;
+        }
+    }
+
+    return {
+        obterTodos,
+        adicionar,
+        remover,
+        contem,
+        alternar
+    };
+})();
+
 
 function configurarBotaoFavoritar(idPokemon) {
-    const botaoFavoritar = document.querySelector('[data-favorite-btn]');
+    const botao = document.querySelector("[data-favorite-btn]");
 
-    if (GerenciadorFavoritos.ehFavorito(idPokemon)) {
-        botaoFavoritar.classList.add('ativo');
-        botaoFavoritar.innerHTML = '<i class="fas fa-star me-2"></i>Desfavoritar';
+    function atualizarBotao(ativado) {
+        if (ativado) {
+            botao.classList.add("ativo");
+            botao.innerHTML = '<i class="fas fa-star me-2"></i>Desfavoritar';
+        } else {
+            botao.classList.remove("ativo");
+            botao.innerHTML = '<i class="fas fa-star me-2"></i>Favoritar';
+        }
     }
 
-    botaoFavoritar.addEventListener('click', () => {
-        if (GerenciadorFavoritos.ehFavorito(idPokemon)) {
-            GerenciadorFavoritos.removerFavorito(idPokemon);
-            botaoFavoritar.classList.remove('ativo');
-            botaoFavoritar.innerHTML = '<i class="fas fa-star me-2"></i>Favoritar';
-        } else {
-            GerenciadorFavoritos.adicionarFavorito(idPokemon);
-            botaoFavoritar.classList.add('ativo');
-            botaoFavoritar.innerHTML = '<i class="fas fa-star me-2"></i>Desfavoritar';
-        }
+    atualizarBotao(GerenciadorFavoritos.contem(idPokemon));
+
+    botao.addEventListener("click", () => {
+        const agora_ativado = GerenciadorFavoritos.alternar(idPokemon);
+        atualizarBotao(agora_ativado);
     });
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const parametrosUrl = new URLSearchParams(window.location.search);
-    const idPokemon = parseInt(parametrosUrl.get('id')) || 1;
+document.addEventListener("DOMContentLoaded", async () => {
+    const parametros = new URLSearchParams(window.location.search);
+    const idPokemon = parseInt(parametros.get("id"));
 
-    const pokemon = await GerenciadorPokemon.carregarPokemon(idPokemon);
+    const pokemon = await CarregadorPokemon.carregar(idPokemon);
 
-    if (pokemon) {
-        Renderizador.renderizarInfoBasica(pokemon);
-        Renderizador.renderizarTipos(pokemon);
-        Renderizador.renderizarEstatisticas(pokemon);
-        //Renderizador.renderizarLinhaEvolutiva(pokemon);
-        //Renderizador.renderizarFraquezasEFortalezas(pokemon);
-        configurarBotaoFavoritar(idPokemon);
-    } else {
-        console.error('Pokémon não encontrado');
-    }
+    RenderizadorPokemon.renderizarInfoBasica(pokemon);
+    RenderizadorPokemon.renderizarTipos(pokemon);
+    RenderizadorPokemon.renderizarEstatisticas(pokemon);
+    RenderizadorPokemon.renderizarLinhaEvolutiva(pokemon);
+    RenderizadorPokemon.renderizarFraquezasEFortalezas(pokemon);
+
+    configurarBotaoFavoritar(idPokemon);
 });
