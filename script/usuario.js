@@ -1,23 +1,35 @@
-// Usuário e senha falsas
-const VALID_USER = "ash";
-const VALID_PASS = "pikachu";
-
-// Pega elementos
 const form = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+
 const successMessage = document.getElementById("successMessage");
 const errorMessage = document.getElementById("errorMessage");
+const loading = document.getElementById("loading");
 
-form.addEventListener("submit", function(event) {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const user = document.getElementById("username").value.trim().toLowerCase();
-  const pass = document.getElementById("password").value;
+  // Esconde mensagens
+  successMessage.classList.add("hidden");
+  errorMessage.classList.add("hidden");
 
-  if (user === VALID_USER && pass === VALID_PASS) {
-    successMessage.classList.remove("hidden");
-    errorMessage.classList.add("hidden");
-  } else {
-    errorMessage.classList.remove("hidden");
-    successMessage.classList.add("hidden");
-  }
+  // Mostra loading
+  loading.classList.remove("hidden");
+
+  // Simula processamento (1.2s)
+  setTimeout(() => {
+
+    const user = usernameInput.value.trim();
+    const pass = passwordInput.value.trim();
+
+    // Oculta loading
+    loading.classList.add("hidden");
+
+    if (user === "ash" && pass === "pikachu") {
+      successMessage.classList.remove("hidden");
+    } else {
+      errorMessage.classList.remove("hidden");
+    }
+
+  }, 1200);
 });

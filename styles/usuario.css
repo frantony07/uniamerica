@@ -64,3 +64,15 @@ button {
   text-align: center;
   margin-top: 10px;
 }
+.loading {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #ffcc00;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
