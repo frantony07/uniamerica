@@ -261,8 +261,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         Renderizador.renderizarInfoBasica(pokemon);
         Renderizador.renderizarTipos(pokemon);
         Renderizador.renderizarEstatisticas(pokemon);
-        //Renderizador.renderizarLinhaEvolutiva(pokemon);
-        //Renderizador.renderizarFraquezasEFortalezas(pokemon);
+        Renderizador.renderizarLinhaEvolutiva(pokemon);
+        Renderizador.renderizarFraquezasEFortalezas(pokemon);
         configurarBotaoFavoritar(idPokemon);
     } else {
         console.error('Pokémon não encontrado');
