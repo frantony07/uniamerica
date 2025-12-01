@@ -16,13 +16,24 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="pokemon-search" 
                placeholder="Buscar Pokémon (ex: Pikachu, Charizard...)">
-        <button class="btn btn-primary" type="button" id="search-button">
+        <button class="btn-search" type="button" id="search-button">
             <i class="fas fa-search"></i> Buscar
         </button>
     </div>
 </div>
 
     <div id="cards-container" class="container mt-4"></div>
+
+    <div id="switch-group" class="container mt-4 d-flex justify-content-center align-items-center">
+        <button id="prev-group" class="btn btn-secondary me-2">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <span id="page-info">Página:</span>
+        <input type="text" id="group-input" class="form-control text-center">
+        <button id="next-group" class="btn btn-secondary ms-2">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
 </body>
 <script type="module" src="../script/main.js"></script>
 <script src="../script/cards.js"></script>

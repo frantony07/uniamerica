@@ -1,6 +1,11 @@
 const API_KEY = '8cfbc0eb-de3d-486e-95e6-33e14b3dce8b';
 const API_BASE_URL = 'https://api.pokemontcg.io/v2/cards';
 
+// Variáveis globais para paginação
+let currentPage = 1;
+let currentSearchQuery = '';
+const cardsPerPage = 20;
+
 function createPokemonCard(card) {
     const cardElement = document.createElement('div');
     cardElement.className = 'card';
@@ -56,13 +61,11 @@ function createPokemonCard(card) {
     return cardElement;
 }
 
-async function fetchCards(searchQuery = '') {
-    let url = API_BASE_URL;
+async function fetchCards(searchQuery = '', page = 1) {
+    let url = `${API_BASE_URL}?page=${page}&pageSize=${cardsPerPage}`;
 
     if (searchQuery) {
-        url += `?q=name:${encodeURIComponent(searchQuery)}*`;
-    } else {
-        url += '?pageSize=20';
+        url += `&q=name:${encodeURIComponent(searchQuery)}*`;
     }
 
     console.log('Fetching from:', url);
@@ -94,7 +97,7 @@ async function fetchCards(searchQuery = '') {
     }
 }
 
-async function loadPokemonCards(searchQuery = '') {
+async function loadPokemonCards(searchQuery = '', page = 1) {
     const container = document.getElementById('cards-container');
 
     if (!container) {
@@ -105,12 +108,13 @@ async function loadPokemonCards(searchQuery = '') {
     container.innerHTML = '<p style="color: white; text-align: center;">Carregando cartas...</p>';
 
     try {
-        const data = await fetchCards(searchQuery);
+        const data = await fetchCards(searchQuery, page);
 
         container.innerHTML = '';
 
         if (data.data.length === 0) {
             container.innerHTML = '<p style="color: white; text-align: center;">Nenhuma carta encontrada.</p>';
+            updatePaginationControls(0, 0);
             return;
         }
 
@@ -123,12 +127,82 @@ async function loadPokemonCards(searchQuery = '') {
 
         container.appendChild(fragment);
 
-        console.log(`${data.data.length} cartas carregadas com sucesso!`);
+        const totalCards = data.totalCount || 0;
+        const totalPages = Math.ceil(totalCards / cardsPerPage);
+        updatePaginationControls(page, totalPages);
+
+        console.log(`${data.data.length} cartas carregadas com sucesso! (Página ${page} de ${totalPages})`);
     } catch (error) {
         console.error('Erro ao carregar as cartas da API:', error);
         if (container) {
             container.innerHTML = '<p style="color: white; text-align: center;">Erro ao carregar as cartas. Verifique sua conexão com a internet.</p>';
         }
+    }
+}
+
+function updatePaginationControls(currentPage, totalPages) {
+    const pageInfo = document.getElementById('page-info');
+    const groupInput = document.getElementById('group-input');
+    const prevButton = document.getElementById('prev-group');
+    const nextButton = document.getElementById('next-group');
+
+    if (pageInfo) {
+        pageInfo.textContent = `Página: ${currentPage} de ${totalPages}`;
+    }
+
+    if (groupInput) {
+        groupInput.value = currentPage;
+        groupInput.max = totalPages;
+    }
+
+    if (prevButton) {
+        prevButton.disabled = currentPage <= 1;
+    }
+
+    if (nextButton) {
+        nextButton.disabled = currentPage >= totalPages;
+    }
+}
+
+function setupPagination() {
+    const prevButton = document.getElementById('prev-group');
+    const nextButton = document.getElementById('next-group');
+    const groupInput = document.getElementById('group-input');
+
+    if (prevButton) {
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                loadPokemonCards(currentSearchQuery, currentPage);
+            }
+        });
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            currentPage++;
+            loadPokemonCards(currentSearchQuery, currentPage);
+        });
+    }
+
+    if (groupInput) {
+        groupInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const newPage = parseInt(groupInput.value);
+                if (newPage > 0) {
+                    currentPage = newPage;
+                    loadPokemonCards(currentSearchQuery, currentPage);
+                }
+            }
+        });
+
+        groupInput.addEventListener('blur', () => {
+            const newPage = parseInt(groupInput.value);
+            if (newPage > 0 && newPage !== currentPage) {
+                currentPage = newPage;
+                loadPokemonCards(currentSearchQuery, currentPage);
+            }
+        });
     }
 }
 
@@ -139,7 +213,9 @@ function setupSearch() {
     if (searchButton) {
         searchButton.addEventListener('click', () => {
             const query = searchInput.value.trim();
-            loadPokemonCards(query);
+            currentSearchQuery = query;
+            currentPage = 1;
+            loadPokemonCards(query, currentPage);
         });
     }
 
@@ -147,7 +223,9 @@ function setupSearch() {
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const query = searchInput.value.trim();
-                loadPokemonCards(query);
+                currentSearchQuery = query;
+                currentPage = 1;
+                loadPokemonCards(query, currentPage);
             }
         });
     }
@@ -156,9 +234,11 @@ function setupSearch() {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         setupSearch();
-        loadPokemonCards();
+        setupPagination();
+        loadPokemonCards('', currentPage);
     });
 } else {
     setupSearch();
-    loadPokemonCards();
+    setupPagination();
+    loadPokemonCards('', currentPage);
 }
