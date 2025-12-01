@@ -1,17 +1,17 @@
 let categoriesToBeSearchedInApi = [];
 
-async function createArrayPokemon(){
+async function createArrayPokemon(categoria){
   try {
-    const response = await fetch('/pokemons.json'); 
+    const response = await fetch(`https://pokeapi.co/api/v2/type/${categoria}`);
     const arrayPokemon =  await response.json();
-    return arrayPokemon;
+    return arrayPokemon.pokemon;
   } catch (error) {
     console.error('Erro ao carregar os dados dos Pokémon:', error);
     return [];
   }
 }
 
-function createVisualitiPokemon(pokemons) {
+async function createVisualitiPokemon(pokemons){
     let fragment = document.createDocumentFragment();
 
     if (!pokemons || pokemons.length === 0) {
@@ -20,34 +20,85 @@ function createVisualitiPokemon(pokemons) {
         message.textContent = "Nenhum Pokémon encontrado para esta seleção.";
         fragment.appendChild(message);
         return fragment;
-    }
-    pokemons.forEach((pokemon) => {
-        let divPokemon = document.createElement('div');
-        divPokemon.classList.add('divPokemon');
+    }//crea una funcion de esto aqui , pasa como parametro la url del pokemon passa a json y despues crea el fragment haz eso com todos los pokemones 
+    
+  const element = await Promise.all(
+    pokemons.map(urlPokemon => createFragmentPokemons( urlPokemon))
+  );
 
-        let linkPokemon = document.createElement('a');
-        linkPokemon.href = `/html/detalhes.html?id=${pokemon.id}`;
-        linkPokemon.style.textDecoration = 'none';
-        linkPokemon.style.color = 'inherit';
-
-        let pokemonId = document.createElement('h3');
-        pokemonId.textContent = `#${pokemon.id}`;
-        linkPokemon.appendChild(pokemonId);
-
-        let pokemonName = document.createElement('h2');
-        pokemonName.textContent = pokemon.name;
-        linkPokemon.appendChild(pokemonName);
-
-        let pokemonsPhoto = document.createElement('img');
-        pokemonsPhoto.src = pokemon.photo_url;
-        pokemonsPhoto.alt = `Photo of ${pokemon.name}`;
-        linkPokemon.appendChild(pokemonsPhoto);
-      
-        divPokemon.appendChild(linkPokemon);
-        fragment.appendChild(divPokemon);
-    });
+  element.forEach(el => fragment.appendChild(el));
 
     return fragment; 
+}
+
+ async function createFragmentPokemons( urlPokemon){
+  try {
+    const response = await fetch(urlPokemon);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const pokemon =  await response.json();
+    
+    let divPokemon = document.createElement('div');
+    divPokemon.classList.add('divPokemon');
+    
+    let linkPokemon = document.createElement('a');
+    linkPokemon.href = `/html/detalhes.html?id=${pokemon.id}`;
+    linkPokemon.style.textDecoration = 'none';
+    linkPokemon.style.color = 'inherit';
+    
+    let pokemonId = document.createElement('h3');
+    pokemonId.textContent = pokemon.id;
+    linkPokemon.appendChild(pokemonId);
+    
+    let pokemonName = document.createElement('h2');
+    pokemonName.textContent = pokemon.name;
+    linkPokemon.appendChild(pokemonName);
+    
+    let pokemonsPhoto = document.createElement('img');
+    pokemonsPhoto.src = pokemon.sprites.front_default ;
+    pokemonsPhoto.alt = `Photo of ${pokemon.id}`;
+    linkPokemon.appendChild(pokemonsPhoto);
+    
+    divPokemon.appendChild(linkPokemon);
+    return divPokemon;
+
+  } catch (error) {
+    console.error('erro na requisição do json ', error)
+    
+    const fallback = document.createElement('p');
+    fallback.classList.add('pokemon-error');
+    fallback.textContent = 'Erro ao carregar o Pokémon.';
+    
+
+  }
+  };
+
+
+
+
+function extractPokemonId(url) {
+  if (typeof url !== 'string') return null;
+  
+  const parts = url.replace(/\/+$/, '').split('/');
+  const idStr = parts[parts.length - 1];
+  const id = Number(idStr);
+  return Number.isFinite(id) ? id : null;
+}
+
+
+function sortPokemonUrlsAsc(urls, opts = { deduplicate: true }) {
+  if (!Array.isArray(urls)) return [];
+
+  const base = opts.deduplicate ? Array.from(new Set(urls)) : [...urls];
+
+  const withIds = base
+    .map(url => ({ url, id: extractPokemonId(url) }))
+    .filter(item => item.id !== null);
+
+
+  withIds.sort((a, b) => a.id - b.id);
+
+
+  return withIds.map(item => item.url);
 }
 
 async function searchedCategory(){
@@ -57,18 +108,16 @@ async function searchedCategory(){
     
     return []; 
   } 
-  const arrayPokemons = await createArrayPokemon();
-  arrayPokemons.forEach(pokemon =>{
-    const typeIsSelected = categoriesToBeSearchedInApi.some(category => 
-        pokemon.type.includes(category)
-    );
+ 
+  const arrayPokemons = await Promise.all(categoriesToBeSearchedInApi.map(category => createArrayPokemon(category)))
+  const arrayPokemonslist = arrayPokemons.flat()
 
-    if (typeIsSelected){
-      arrayPokemonsSelected.push(pokemon)
-    }
-  });
+  arrayPokemonsSelected = await arrayPokemonslist.map(item => item.pokemon.url);
+  const endArray = sortPokemonUrlsAsc(arrayPokemonsSelected)
+  arrayPokemonsSelected.forEach(pokemom => console.log(pokemom));
 
-  return arrayPokemonsSelected;
+
+  return endArray;
 }
 
 
@@ -77,8 +126,11 @@ function createButtonOfSearched(containerPokemons){
    buttonSearch.classList.add('button-search');
    buttonSearch.textContent = 'pesquisar';
    
-
    buttonSearch.addEventListener('click' , async () => {
+     containerPokemons.textContent = "realizando pesquisa";
+     containerPokemons.style.color= 'white'
+     
+     
       
       const selectedPokemonArray = await searchedCategory();
      
@@ -88,7 +140,7 @@ function createButtonOfSearched(containerPokemons){
       }
     
    
-      const newPokemonFragment = createVisualitiPokemon(selectedPokemonArray);
+      const newPokemonFragment = await createVisualitiPokemon(selectedPokemonArray);
       containerPokemons.innerHTML = '';
       containerPokemons.appendChild(newPokemonFragment);
 
@@ -165,16 +217,13 @@ export function category(){
     event.stopPropagation();
     const isVisible = subButtonsContainer.style.display === 'flex';
     subButtonsContainer.style.display = isVisible ? 'none' : 'flex';
-    mainButton.textContent = isVisible ? 'hide types ▲' : 'show types ▼';
+    mainButton.textContent = isVisible ?   'show types ▼': 'hide types ▲';
   });
 
   document.addEventListener('click', () =>{
-   
-    if(mainButton.textContent == 'hide types ▲' && subButtonsContainer.style.display == 'flex'){
-        subButtonsContainer.style.display = 'none';
-        mainButton.textContent = 'show types ▼';
+ 
         buttonSearch.classList.remove('selected');
-    }
+    
   });
 
   categoryDiv.appendChild(filterControls);

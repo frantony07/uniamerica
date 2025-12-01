@@ -29,24 +29,24 @@
          <section class="mapa">
         <h2>Mapa Interativo das Regiões</h2>
         <div class="mapa-area">
-          <div class="ponto" data-region="Kanto" style="left: 20%; top: 30%; background-color: #dc2626;"></div>
-          <div class="ponto" data-region="Johto" style="left: 35%; top: 40%; background-color: #2563eb;"></div>
-          <div class="ponto" data-region="Hoenn" style="left: 50%; top: 50%; background-color: #16a34a;"></div>
-          <div class="ponto" data-region="Sinnoh" style="left: 65%; top: 60%; background-color: #9333ea;"></div>
-          <div class="ponto" data-region="Unova" style="left: 80%; top: 70%; background-color: #ca8a04;"></div>
-          <div class="ponto" data-region="Kalos" style="left: 90%; top: 75%; background-color: #db2777;"></div>
+          <div class="ponto" data-region="Kanto" style="left: 20%; top: 30%; background-color: #dc2626;color: black">Kanto</div>
+          <div class="ponto" data-region="Johto" style="left: 35%; top: 40%; background-color: #2563eb;color: black">Johto</div>
+          <div class="ponto" data-region="Hoenn" style="left: 50%; top: 50%; background-color: #16a34a;color: black">Hoenn</div>
+          <div class="ponto" data-region="Sinnoh" style="left: 65%; top: 60%; background-color: #9333ea;color: black">Sinnoh</div>
+          <div class="ponto" data-region="Unova" style="left: 80%; top: 70%; background-color: #ca8a04;color: black">Unova</div>
+          <div class="ponto" data-region="Kalos" style="left: 90%; top: 75%; background-color: #db2777;color: black">Kalos</div>
         </div>
       </section>
 
        <aside class="painel text-white">
         <h3>Regiões Disponíveis</h3>
         <ul>
-          <li class="kanto ">Kanto – 4 Pokémon</li>
-          <li class="johto">Johto – 1 Pokémon</li>
-          <li class="hoenn">Hoenn – 1 Pokémon</li>
-          <li class="sinnoh">Sinnoh – 0 Pokémon</li>
-          <li class="unova">Unova – 0 Pokémon</li>
-          <li class="kalos">Kalos – 0 Pokémon</li>
+          <li class="kanto ">Kanto</li>
+          <li class="johto">Johto </li>
+          <li class="hoenn">Hoenn </li>
+          <li class="sinnoh">Sinnoh </li>
+          <li class="unova">Unova </li>
+          <li class="kalos">Kalos </li>
         </ul>
 
          <div id="info" class="mt-3">
@@ -61,32 +61,136 @@
 </body>
 
 <script>
-     const regioes = {
-      Kanto: ["Bulbasaur", "Charmander", "Squirtle", "Pikachu"],
-      Johto: ["Snorlax"],
-      Hoenn: ["Charizard"],
-      Sinnoh: [],
-      Unova: [],
-      Kalos: []
-    };
+  const regionToGenerationId = {
+    Kanto: 1,   
+    Johto: 2,  
+    Hoenn: 3,   
+    Sinnoh: 4,  
+    Unova: 5,   
+    Kalos: 6,   
+   
+  };
 
-    const pontos = document.querySelectorAll(".ponto");
-    const info = document.getElementById("info");
+  async function fetchJson(url) {
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      const body = await resp.text();
+      throw new Error(`HTTP ${resp.status}`);
+    }
+    return resp.json();
+  }
+
+  
+  function extractIdFromUrl(url) {
+    const parts = url.replace(/\/+$/, '').split('/');
+    const idStr = parts[parts.length - 1];
+    const id = Number(idStr);
+    return id
+  }
+
+  function capitalize(s) {
+    if (!s || typeof s !== 'string') return s;
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+
+   
+  async function getPokemonSpeciesByGeneration(genId) {
+    const data = await fetchJson(`https://pokeapi.co/api/v2/generation/${genId}/`);
+    const species = (data.pokemon_species || [])
+      .map(s => {
+        const id = extractIdFromUrl(s.url);
+        return { id, name: s.name, url: s.url };
+      })
+      .filter(sp => sp.id !== null)
+      .sort((a, b) => a.id - b.id);
+    return species;
+  }
+
+ 
+  function renderInfo(regionName, species) {
+    const info = document.getElementById('info');
+    if (!info) return;
+    const count = Array.isArray(species) ? species.length : 0;
+
+    
+  info.innerHTML = `
+    <h5>${regionName} — ${count} Pokémon</h5>
+    ${
+      count > 0
+        ? `
+          <div class="pokemon-list">
+            ${species
+              .map(
+                sp => `
+                  <button type="button" class="pokemon-btn" data-id="${sp.id}">
+                    #${sp.id} ${capitalize(sp.name)}
+                  </button>
+                `
+              )
+              .join('')}
+          </div>
+        `
+        : `<p>Nenhum Pokémon encontrado nesta região.</p>`
+    }
+  `;
+
+  const listEl = info.querySelector('.pokemon-list');
+    listEl.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('.pokemon-btn');
+      if (!btn) return; 
+      const pokemonId = btn.dataset.id;
+    
+      window.location.href = `/html/detalhes.html?id=${pokemonId}`;
+    });
+
+
+
+  }
+
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const pontos = document.querySelectorAll('.ponto');
+    const info = document.getElementById('info');
 
     pontos.forEach(ponto => {
-      ponto.addEventListener("click", () => {
-        const nome = ponto.getAttribute("data-region");
-        const pokemons = regioes[nome];
-        info.innerHTML = `
-          <h5>${nome}</h5>
-          ${
-            pokemons.length > 0
-              ? "<ul>" + pokemons.map(p => `<li>${p}</li>`).join("") + "</ul>"
-              : "<p>Nenhum Pokémon encontrado nesta região.</p>"
+     
+      ponto.setAttribute('tabindex', '0');
+      ponto.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          ponto.click();
+        }
+      });
+
+      ponto.addEventListener('click', async () => {
+        const region = ponto.getAttribute('data-region');
+        const genId = regionToGenerationId[region];
+
+        if (!genId) {
+          renderInfo(region || 'Região', []);
+          return;
+        }
+
+        if (info) {
+          info.innerHTML = `<p>Carregando ${region}...</p>`;
+        }
+
+        try {
+          const species = await getPokemonSpeciesByGeneration(genId);
+          renderInfo(region, species);
+        } catch (e) {
+          console.error(e);
+          if (info) {
+            info.innerHTML = `<p>Erro ao carregar ${region}.</p>`;
           }
-        `;
+        }
       });
     });
+  });
+</script>
+
+
   </script>
 
 <script type="module" src="../script/main.js"></script>

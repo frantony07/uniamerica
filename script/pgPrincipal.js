@@ -1,33 +1,46 @@
 // UM SÓ DOMContentLoaded
-document.addEventListener('DOMContentLoaded', async() => {
+document.addEventListener('DOMContentLoaded', () => {
     const campoBusca = document.getElementById('pokemonBuscado');
     const botaoBusca = document.getElementById('botaoBusca');
     const areaResultado = document.getElementById('procurarPokemon');
 
-    const searchedPokemon = campoBusca.value;
-    const dados = await fetch('../pokemons.json');
-    const pokemons = await dados.json();
+    botaoBusca.addEventListener('click', () => { 
+        const searchedPokemon = campoBusca.value.trim()
 
-    function mostrarPokemon(pokemon) {
-       window.location.href = `/html/detalhes.html?id=${pokemon.id}`;
+    if (!searchedPokemon) {
+        alert('Digite um nome ou ID de Pokémon.');
+        return;
     }
+    const isNumber = parseInt(searchedPokemon , 10);
 
-    botaoBusca.addEventListener('click', () => {
-    const searchedPokemon = campoBusca.value.trim(); // garante que espaços não atrapalhem
-    if (searchedPokemon) {
-        const pokemonEncontrado = pokemons.find(p => 
-            p.name.toLowerCase() === searchedPokemon.toLowerCase() || 
-            p.id.toString() === searchedPokemon
-        );
-
-        if (pokemonEncontrado) {
-            mostrarPokemon(pokemonEncontrado);
-        } else {
-            areaResultado.innerHTML = '<p>Pokémon não encontrado</p>';
+        if (!isNaN(isNumber)){
+            mostrarPokemonPorId(searchedPokemon)
+        }else{
+            mostrarPokemonPorNome(searchedPokemon)
         }
+        
+    });
+});
+function mostrarPokemonPorId(pokemon) {
+    window.location.href = `/html/detalhes.html?id=${pokemon}`;
+}
+
+async function mostrarPokemonPorNome(searchPokemon){
+    try {
+        const nomeFormatado = String(searchPokemon).toLowerCase()
+        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nomeFormatado}/`);
+        if(!resposta.ok){
+            console.error('ocorreu um erro ' , resposta.status);
+            alert('pokemon não encontrado, verifique o nome ');
+            return;
+        }
+        const pokemon = await resposta.json();
+
+        mostrarPokemonPorId(pokemon.id);
+    } catch (error) {
+        
+        console.error('Erro no fetch/parse:', error);
+        alert('Ocorreu um erro ao buscar o Pokémon.');
+
     }
-});
-
-
-
-});
+}
