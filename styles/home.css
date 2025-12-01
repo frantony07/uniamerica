@@ -44,8 +44,7 @@ body{
 }
 .Home:hover{
     color: #000000;
-    background-image:linear-gradient( #e23d3d, transparent 60%);
-    box-shadow:  0 0 1px #e23d3d;
+    background-color: #e23d3d;
 }
 .Home.selected{
     color: #000000;
