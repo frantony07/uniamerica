@@ -71,14 +71,12 @@
    
   };
 
-  // Fetch seguro
   async function fetchJson(url) {
     const resp = await fetch(url);
     if (!resp.ok) {
       const body = await resp.text();
-      throw new Error(`HTTP ${resp.status}: ${body.slice(0, 120)}`);
+      throw new Error(`HTTP ${resp.status}`);
     }
-    const ct = resp.headers.get('content-type') || '';
     return resp.json();
   }
 
@@ -87,7 +85,7 @@
     const parts = url.replace(/\/+$/, '').split('/');
     const idStr = parts[parts.length - 1];
     const id = Number(idStr);
-    return Number.isFinite(id) ? id : null;
+    return id
   }
 
   function capitalize(s) {
@@ -98,7 +96,7 @@
 
    
   async function getPokemonSpeciesByGeneration(genId) {
-    const data = await fetchJson(`https://pokeapi.co/api/v2/generation/${encodeURIComponent(genId)}/`);
+    const data = await fetchJson(`https://pokeapi.co/api/v2/generation/${genId}/`);
     const species = (data.pokemon_species || [])
       .map(s => {
         const id = extractIdFromUrl(s.url);
