@@ -38,22 +38,22 @@ const CarregadorPokemon = (() => {
 
 const RenderizadorPokemon = {
     corsPorTipo: {
-        grama: "bg-success",
-        veneno: "bg-danger",
-        fogo: "bg-danger",
-        agua: "bg-info",
-        eletrico: "bg-warning",
-        inseto: "bg-success",
-        voador: "bg-primary",
-        normal: "bg-secondary",
-        terra: "bg-warning",
-        psiquico: "bg-danger",
-        pedra: "bg-secondary",
-        gelo: "bg-info",
-        dragao: "bg-primary",
-        escuro: "bg-dark",
-        aco: "bg-secondary",
-        fada: "bg-pink"
+    "grass": "bg-success",
+    "poison": "bg-danger",
+    "fire": "bg-danger",
+    "water": "bg-info",
+    "electric": "bg-warning",
+    "bug": "bg-success",
+    "flying": "bg-primary",
+    "normal": "bg-secondary",
+    "ground": "bg-warning",
+    "psychic": "bg-danger",
+    "rock": "bg-secondary",
+    "ice": "bg-info",
+    "dragon": "bg-primary",
+    "dark": "bg-dark",
+    "steel": "bg-secondary",
+    "fairy": "bg-pink"
     },
 
     renderizarInfoBasica(pokemon) {
@@ -65,8 +65,6 @@ const RenderizadorPokemon = {
 
         document.querySelector('[data-imagem-pokemon]').src = 
             pokemon.sprites.front_default;
-
-        document.querySelector('[data-raridade]').textContent = "Comum";
 
         const tipos = pokemon.types.map(t => t.type.name);
         const descricaoTipos = tipos.join(" e ");
@@ -158,23 +156,23 @@ const RenderizadorPokemon = {
         }
 
         const coresTipo = {
-            fogo: "#f08030",
-            agua: "#6890f0",
-            grama: "#78c850",
-            eletrico: "#f8d030",
-            gelo: "#98d8d8",
-            lutador: "#c03028",
-            veneno: "#a040a0",
-            terra: "#e0c068",
-            voador: "#a890f0",
-            psiquico: "#f85888",
-            inseto: "#a8b820",
-            pedra: "#b8a038",
-            fantasma: "#705898",
-            dragao: "#7038f8",
-            escuro: "#705848",
-            aco: "#b8b8d0",
-            fada: "#ee99ac"
+            "fire": "#f08030",
+            "water": "#6890f0",
+            "grass": "#78c850",
+            "electric": "#f8d030",
+            "ice": "#98d8d8",
+            "fighting": "#c03028",
+            "poison": "#a040a0",
+            "ground": "#e0c068",
+            "flying": "#a890f0",
+            "psychic": "#f85888",
+            "bug": "#a8b820",
+            "rock": "#b8a038",
+            "ghost": "#705898",
+            "dragon": "#7038f8",
+            "dark": "#705848",
+            "steel": "#b8b8d0",
+            "fairy": "#ee99ac"
         };
 
         this._renderizarBadges("[data-fraquezas]", fraquezas, coresTipo);
