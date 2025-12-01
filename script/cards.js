@@ -105,7 +105,7 @@ async function loadPokemonCards(searchQuery = '', page = 1) {
         return;
     }
 
-    container.innerHTML = '<p style="color: white; text-align: center;">Carregando cartas...</p>';
+    container.innerHTML = '<h2 id="loading-screen" class="loading">Carregando cartas...</p><i class="fas fa-spinner fa-spin loading"></i>';
 
     try {
         const data = await fetchCards(searchQuery, page);
@@ -113,7 +113,7 @@ async function loadPokemonCards(searchQuery = '', page = 1) {
         container.innerHTML = '';
 
         if (data.data.length === 0) {
-            container.innerHTML = '<p style="color: white; text-align: center;">Nenhuma carta encontrada.</p>';
+            container.innerHTML = '<h2 id="loading-not-found" class="loading">Nenhuma carta encontrada.</p>';
             updatePaginationControls(0, 0);
             return;
         }
@@ -135,7 +135,7 @@ async function loadPokemonCards(searchQuery = '', page = 1) {
     } catch (error) {
         console.error('Erro ao carregar as cartas da API:', error);
         if (container) {
-            container.innerHTML = '<p style="color: white; text-align: center;">Erro ao carregar as cartas. Verifique sua conexão com a internet.</p>';
+            container.innerHTML = '<h2 id="loading-error" class="loading">Erro ao carregar as cartas. Verifique sua conexão com a internet e recarregue a página.</p>';
         }
     }
 }
