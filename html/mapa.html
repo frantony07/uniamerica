@@ -79,10 +79,6 @@
       throw new Error(`HTTP ${resp.status}: ${body.slice(0, 120)}`);
     }
     const ct = resp.headers.get('content-type') || '';
-    if (!ct.includes('application/json')) {
-      const body = await resp.text();
-      throw new Error(`Resposta não JSON (${ct}): ${body.slice(0, 120)}`);
-    }
     return resp.json();
   }
 
@@ -119,14 +115,39 @@
     if (!info) return;
     const count = Array.isArray(species) ? species.length : 0;
 
-    info.innerHTML = `
-      <h5>${regionName} — ${count} Pokémon</h5>
-      ${
-        count > 0
-          ? `<ul>${species.map(sp => `<li>#${sp.id} ${capitalize(sp.name)}</li>`).join('')}</ul>`
-          : `<p>Nenhum Pokémon encontrado nesta região.</p>`
-      }
-    `;
+    
+  info.innerHTML = `
+    <h5>${regionName} — ${count} Pokémon</h5>
+    ${
+      count > 0
+        ? `
+          <div class="pokemon-list">
+            ${species
+              .map(
+                sp => `
+                  <button type="button" class="pokemon-btn" data-id="${sp.id}">
+                    #${sp.id} ${capitalize(sp.name)}
+                  </button>
+                `
+              )
+              .join('')}
+          </div>
+        `
+        : `<p>Nenhum Pokémon encontrado nesta região.</p>`
+    }
+  `;
+
+  const listEl = info.querySelector('.pokemon-list');
+    listEl.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('.pokemon-btn');
+      if (!btn) return; 
+      const pokemonId = btn.dataset.id;
+    
+      window.location.href = `/html/detalhes.html?id=${pokemonId}`;
+    });
+
+
+
   }
 
   

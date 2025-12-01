@@ -78,6 +78,26 @@ body {
   transform: scale(1.4);
 }
 
+.pokemon-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.pokemon-btn {
+  padding: .4rem .6rem;
+  border: 1px solid #ccc;
+  border-radius: .4rem;
+  background: linear-gradient(145deg, #111827, #000);
+  
+  color: white;
+}
+.pokemon-btn:hover {
+  cursor: pointer;
+  padding: .6rem .8rem;
+  border: 1px solid #c25c5c;
+}
+
+
 .painel {
   background: linear-gradient(145deg, #111827, #000);
   border: 2px solid #374151;
