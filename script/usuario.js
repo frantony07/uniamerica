@@ -27,6 +27,7 @@ form.addEventListener("submit", (event) => {
 
     if (user === "ash" && pass === "pikachu") {
       successMessage.classList.remove("hidden");
+        window.location.href = '/html/home.html'
     } else {
       errorMessage.classList.remove("hidden");
     }
