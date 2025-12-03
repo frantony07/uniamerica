@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const campoBusca = document.getElementById('pokemonBuscado');
     const botaoBusca = document.getElementById('botaoBusca');
-    const areaResultado = document.getElementById('procurarPokemon');
+   
 
     botaoBusca.addEventListener('click', () => { 
         const searchedPokemon = campoBusca.value.trim()
