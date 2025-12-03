@@ -107,7 +107,10 @@ body {
   padding: 20px;
   width: 500px;
   max-width: 500px;
+  max-height: 90vh;
   box-shadow: 0 0 15px rgba(0,255,255,0.1);
+  overflow-y: auto;
+  max-height: 78.5vh;
 }
 
 .painel h3 {
