@@ -186,7 +186,7 @@ function setupPagination() {
     }
 
     if (groupInput) {
-        groupInput.addEventListener('keypress', (e) => {
+        groupInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const newPage = parseInt(groupInput.value);
                 if (newPage > 0) {
@@ -220,7 +220,7 @@ function setupSearch() {
     }
 
     if (searchInput) {
-        searchInput.addEventListener('keypress', (e) => {
+        searchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const query = searchInput.value.trim();
                 currentSearchQuery = query;
