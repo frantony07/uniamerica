@@ -200,7 +200,7 @@ export function category(){
   filterControls.classList.add('filter-controls');
 
   const mainButton = document.createElement('button'); 
-  mainButton.textContent = 'show types ▼';
+  mainButton.textContent = 'mostrar tipos ▼';
   mainButton.classList.add('main-category-button'); 
     
   const subButtonsContainer = document.createElement('div');
@@ -217,7 +217,7 @@ export function category(){
     event.stopPropagation();
     const isVisible = subButtonsContainer.style.display === 'flex';
     subButtonsContainer.style.display = isVisible ? 'none' : 'flex';
-    mainButton.textContent = isVisible ?   'show types ▼': 'hide types ▲';
+    mainButton.textContent = isVisible ?   'mostrar tipos ▼': 'ocultar tipos ▲';
   });
 
   document.addEventListener('click', () =>{

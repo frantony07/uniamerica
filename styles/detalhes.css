@@ -9,10 +9,15 @@
 
 .card-pokemon-detalhes.card-weakness {
     border: 2px solid #cc3333;
+    border-radius: 10px;
+    padding: 20px;
 }
+
 
 .card-pokemon-detalhes.card-strength {
     border: 2px solid #00cc00;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 .pokemon-id-title {
